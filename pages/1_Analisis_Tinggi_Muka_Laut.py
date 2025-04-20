@@ -22,9 +22,18 @@ with open('style.css') as f:
 @st.cache_resource
 def download_and_open_nc():
     url = "https://github.com/adityoAJA/SLR/releases/download/v1/cmems_obs.nc"
-    response = requests.get(url)
-    ds = xr.open_dataset(io.BytesIO(response.content), engine="netcdf4")
+    local_path = "cmems_obs.nc"
+
+    # Unduh dan simpan jika belum ada
+    if not os.path.exists(local_path):
+        response = requests.get(url)
+        with open(local_path, "wb") as f:
+            f.write(response.content)
+
+    # Buka file .nc dari disk
+    ds = xr.open_dataset(local_path, engine="netcdf4")
     return ds
+
 
 # judul section
 st.title('Analisis Tinggi Muka Laut')
