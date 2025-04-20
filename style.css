@@ -1,0 +1,11 @@
+/* style.css */
+.justified-text {
+    text-align: justify;
+    /* background-color: #d9edf7; */
+    padding: 0px;
+    /* border-radius: 5px;
+    border: 1px solid #bce8f1; */
+    font-family: Calibri, sans-serif; /* 'Times New Roman', serif; */
+    font-size: 16px; /* Adjust the font size */
+    /* line-height: 1.6; Optional: Adjust the line spacing for better readability */
+}
