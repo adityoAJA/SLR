@@ -21,27 +21,15 @@ st.set_page_config(
 with open('style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-@st.cache_resource
+# @st.cache_resource
 def download_and_open_nc():
-    url = "https://github.com/adityoAJA/SLR/releases/download/v1/data_obs.zip"
+    url = "https://github.com/adityoAJA/SLR/releases/download/v1/cmems_obs.zip"
 
     nc_filename = "cmems_obs.nc"
     if not os.path.exists(nc_filename):
         response = requests.get(url)
-
-        # Tambahkan pengecekan
-        if response.status_code != 200:
-            st.error(f"Gagal mengunduh file: {response.status_code} untuk URL: {url}")
-            st.stop()
-
-        # Validasi header juga (optional)
-        content_type = response.headers.get("Content-Type", "")
-        if "zip" not in content_type:
-            st.error("File yang diunduh bukan ZIP. Mungkin URL salah atau file hilang.")
-            st.stop()
-
         with zipfile.ZipFile(io.BytesIO(response.content)) as zip_ref:
-            zip_ref.extractall(".")
+            zip_ref.extractall(".")  # Ekstrak ke current folder
 
     return nc_filename
 
