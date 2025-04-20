@@ -28,8 +28,20 @@ def download_and_open_nc():
     nc_filename = "cmems_obs.nc"
     if not os.path.exists(nc_filename):
         response = requests.get(url)
+
+        # Tambahkan pengecekan
+        if response.status_code != 200:
+            st.error(f"Gagal mengunduh file: {response.status_code} untuk URL: {url}")
+            st.stop()
+
+        # Validasi header juga (optional)
+        content_type = response.headers.get("Content-Type", "")
+        if "zip" not in content_type:
+            st.error("File yang diunduh bukan ZIP. Mungkin URL salah atau file hilang.")
+            st.stop()
+
         with zipfile.ZipFile(io.BytesIO(response.content)) as zip_ref:
-            zip_ref.extractall(".")  # Ekstrak ke current folder
+            zip_ref.extractall(".")
 
     return nc_filename
 
