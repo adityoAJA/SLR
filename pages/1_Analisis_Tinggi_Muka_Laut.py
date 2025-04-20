@@ -5,6 +5,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
 import io
+import tempfile
 import os
 import requests
 
@@ -23,18 +24,19 @@ with open('style.css') as f:
 @st.cache_resource
 def download_and_open_nc():
     url = "https://github.com/adityoAJA/SLR/releases/download/v1/cmems_obs.nc"
-    local_path = "cmems_obs.nc"
 
-    # Unduh dan simpan jika belum ada
-    if not os.path.exists(local_path):
-        response = requests.get(url)
-        with open(local_path, "wb") as f:
-            f.write(response.content)
+    # Buat file temporer
+    temp = tempfile.NamedTemporaryFile(delete=False, suffix=".nc")
+    temp_path = temp.name
 
-    # Buka file .nc dari disk
-    ds = xr.open_dataset(local_path, engine="netcdf4")
+    # Download isi file
+    response = requests.get(url)
+    temp.write(response.content)
+    temp.close()
+
+    # Buka file .nc
+    ds = xr.open_dataset(temp_path, engine="netcdf4")
     return ds
-
 
 # judul section
 st.title('Analisis Tinggi Muka Laut')
