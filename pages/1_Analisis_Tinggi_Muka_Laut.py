@@ -23,7 +23,7 @@ with open('style.css') as f:
 def download_and_open_nc():
     url = "https://github.com/adityoAJA/SLR/releases/download/v1/cmems_obs.nc"
     response = requests.get(url)
-    ds = xr.open_dataset(io.BytesIO(response.content))
+    ds = xr.open_dataset(io.BytesIO(response.content), engine="netcdf4")
     return ds
 
 # judul section
