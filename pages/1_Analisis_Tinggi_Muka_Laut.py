@@ -21,9 +21,9 @@ st.set_page_config(
 with open('style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-# @st.cache_resource
+@st.cache_resource
 def download_and_open_nc():
-    url = "https://github.com/adityoAJA/SLR/releases/download/v1/cmems_obs.zip"
+    url = "https://github.com/adityoAJA/SLR/releases/download/v1/data_obs.zip"
 
     nc_filename = "cmems_obs.nc"
     if not os.path.exists(nc_filename):
