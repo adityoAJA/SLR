@@ -4,7 +4,7 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
-import io
+from io import BytesIO
 import tempfile
 import os
 import requests
@@ -21,21 +21,18 @@ st.set_page_config(
 with open('style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
+@st.cache_resource
 def download_and_open_nc():
     url = "https://github.com/adityoAJA/SLR/releases/download/v1/cmems_obs.nc"
-    local_path = "/tmp/cmems_obs.nc"  # Gunakan direktori sementara untuk menghindari masalah file yang tertimpa
-
-    # Unduh file
+    
+    # Unduh file menggunakan requests
     response = requests.get(url)
     if response.status_code == 200:
-        with open(local_path, "wb") as f:
-            f.write(response.content)
+        # Membaca file NetCDF dari bytes
+        ds = xr.open_dataset(BytesIO(response.content), engine="netcdf4")
+        return ds
     else:
         raise Exception(f"Failed to download file: {response.status_code}")
-
-    # Buka file NetCDF
-    ds = xr.open_dataset(local_path, engine="netcdf4")
-    return ds
 
 # judul section
 st.title('Analisis Tinggi Muka Laut')
