@@ -21,27 +21,21 @@ st.set_page_config(
 with open('style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-@st.cache_resource
 def download_and_open_nc():
     url = "https://github.com/adityoAJA/SLR/releases/download/v1/cmems_obs.nc"
-    
-    # Simpan di file temporer dengan suffix .nc
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".nc") as tmp_file:
-        temp_path = tmp_file.name
+    local_path = "/tmp/cmems_obs.nc"  # Gunakan direktori sementara untuk menghindari masalah file yang tertimpa
 
-        # Download dengan stream
-        with requests.get(url, stream=True) as r:
-            r.raise_for_status()
-            for chunk in r.iter_content(chunk_size=8192):
-                tmp_file.write(chunk)
+    # Unduh file
+    response = requests.get(url)
+    if response.status_code == 200:
+        with open(local_path, "wb") as f:
+            f.write(response.content)
+    else:
+        raise Exception(f"Failed to download file: {response.status_code}")
 
-    # Coba buka file NetCDF
-    try:
-        ds = xr.open_dataset(temp_path, engine="netcdf4")  # bisa coba 'h5netcdf' juga kalau error
-        return ds
-    except Exception as e:
-        st.error(f"Gagal membuka NetCDF: {e}")
-        return None
+    # Buka file NetCDF
+    ds = xr.open_dataset(local_path, engine="netcdf4")
+    return ds
 
 # judul section
 st.title('Analisis Tinggi Muka Laut')
