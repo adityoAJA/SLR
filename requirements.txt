@@ -7,3 +7,4 @@ scipy
 requests
 openpyxl
 netcdf4
+matplotlib
