@@ -339,7 +339,7 @@ with tab3:
         width=1000,
         height=480,
         margin={"r":0, "t":100, "l":0, "b":0},
-        title={'text':"Peta Tren Sea Surface Height Periode 1993-2023",
+        title={'text':"Peta Tren Tinggi Muka Laut Periode 1993-2023",
                'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}},
     )
