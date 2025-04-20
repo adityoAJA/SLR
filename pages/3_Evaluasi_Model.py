@@ -23,13 +23,13 @@ st.title('Evaluasi Model GCM')
 # --- Fungsi untuk memuat data evaluasi dengan cache ---
 @st.cache_data
 def load_evaluation_data(sheet_name):
-    return pd.read_excel("evaluasi_model_lengkap.xlsx", sheet_name=sheet_name)
+    return pd.read_excel("evaluasi_model_lengkap_ok.xlsx", sheet_name=sheet_name)
 
 @st.cache_data
 def load_all_evaluation_data(sheet_map):
     data_list = []
     for model_name, sheet_name in sheet_map.items():
-        df = pd.read_excel("evaluasi_model_lengkap.xlsx", sheet_name=sheet_name)
+        df = pd.read_excel("evaluasi_model_lengkap_ok.xlsx", sheet_name=sheet_name)
         df["Model"] = model_name
         data_list.append(df)
     return pd.concat(data_list, ignore_index=True)
