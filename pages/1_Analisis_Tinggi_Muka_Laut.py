@@ -240,7 +240,7 @@ with tab2:
     ))
 
     fig_trend.update_layout(
-        title={'text':'Tren Tinggi Muka Laut (TML) Indonesia Periode 1993-2023',
+        title={'text':'Tren Rata-Rata Tinggi Muka Laut Indonesia Periode 1993-2023',
                'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}},
         xaxis_title='Time',
