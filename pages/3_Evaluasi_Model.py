@@ -21,11 +21,11 @@ st.title('Evaluasi Model GCM')
 # st.divider()
 
 # --- Fungsi untuk memuat data evaluasi dengan cache ---
-# @st.cache_data
+@st.cache_data
 def load_evaluation_data(sheet_name):
     return pd.read_excel("evaluasi_model_lengkap_ok.xlsx", sheet_name=sheet_name)
 
-# @st.cache_data
+@st.cache_data
 def load_all_evaluation_data(sheet_map):
     data_list = []
     for model_name, sheet_name in sheet_map.items():
