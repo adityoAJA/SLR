@@ -4,6 +4,8 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
+import io
+import requests
 
 # Setting layout halaman
 st.set_page_config(
@@ -17,6 +19,13 @@ st.set_page_config(
 with open('style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
+@st.cache_resource
+def download_and_open_nc():
+    url = "https://github.com/adityoAJA/SLR/releases/download/v1/cmems_obs.nc"
+    response = requests.get(url)
+    ds = xr.open_dataset(io.BytesIO(response.content))
+    return ds
+
 # judul section
 st.title('Analisis Tinggi Muka Laut')
 
@@ -27,15 +36,11 @@ tab1, tab2, tab3 = st.tabs(["📍 SLA Tahunan", "📈 Tren Time Series", "🌊 P
 
 with tab1:
     # 1. buat peta rata2 tahunan
+    # Panggil fungsi
+    with st.spinner("Sedang mengunduh dan membuka NetCDF..."):
+        ds = download_and_open_nc()
 
-    # Load file NetCDF
-    file_path = 'cmems_obs-sl_glo_phy-ssh_my_allsat-l4-duacs-0.125deg_P1M-m_1993_2023.nc'
-
-    @st.cache_data
-    def load_nc_file(path):
-        return xr.open_dataset(path)
-
-    data = load_nc_file(file_path)
+    data = ds
 
     # Variabel
     lat = data['latitude'].values
@@ -256,8 +261,8 @@ with tab3:
     # Baca file NetCDF yang sudah dihitung tren (zos_trend_annual_mm_per_year.nc)
     @st.cache_data
     def load_trend_data(file_path):
-        ds = xr.open_dataset(file_path)
-        return ds
+        ds1 = xr.open_dataset(file_path)
+        return ds1
 
     # Load data tren
     trend_ds = load_trend_data("SSH_trend_indo_1993_2014.nc")
