@@ -117,30 +117,6 @@ with tab1:
     )
     st.plotly_chart(fig2, use_container_width=True)
 
-with tab3:
-    # --- Load semua sheet ---
-    sheet_map = {
-        "Original": "Sheet1",
-        "CNN": "Sheet2",
-        "CNN-LSTM": "Sheet3"
-    }
-    model_list = list(sheet_map.keys())
-    data_list = []
-
-    for model_name, sheet_name in sheet_map.items():
-        df = load_evaluation_data(sheet_name)
-        df["Model"] = model_name
-        data_list.append(df)
-
-    # Gabungkan semua sheet menjadi satu DataFrame
-    df_all = pd.concat(data_list, ignore_index=True)
-
-    st.subheader("📋 Tabel Evaluasi Lengkap")
-    st.dataframe(
-        df_all.style.background_gradient(cmap='YlGn', subset=["Correlation"])
-                    .background_gradient(cmap='OrRd_r', subset=["RMSE"]),
-    use_container_width=True, height=780)
-
 with tab2:
     st.subheader("📊 Radar Chart untuk Perbandingan Model")
     # --- Load semua sheet ---
@@ -201,6 +177,30 @@ with tab2:
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}},
     )
     st.plotly_chart(fig_radar, use_container_width=True)
+
+with tab3:
+    # --- Load semua sheet ---
+    sheet_map = {
+        "Original": "Sheet1",
+        "CNN": "Sheet2",
+        "CNN-LSTM": "Sheet3"
+    }
+    model_list = list(sheet_map.keys())
+    data_list = []
+
+    for model_name, sheet_name in sheet_map.items():
+        df = load_evaluation_data(sheet_name)
+        df["Model"] = model_name
+        data_list.append(df)
+
+    # Gabungkan semua sheet menjadi satu DataFrame
+    df_all = pd.concat(data_list, ignore_index=True)
+
+    st.subheader("📋 Tabel Evaluasi Lengkap")
+    st.dataframe(
+        df_all.style.background_gradient(cmap='YlGn', subset=["Correlation"])
+                    .background_gradient(cmap='OrRd_r', subset=["RMSE"]),
+    use_container_width=True, height=780)
 
 # membuat narasi tabel dalam keterangan
 with st.expander(":blue-background[Keterangan :]"):
