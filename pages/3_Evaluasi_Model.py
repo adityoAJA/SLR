@@ -128,7 +128,7 @@ with tab3:
     data_list = []
 
     for model_name, sheet_name in sheet_map.items():
-        df = pd.read_excel("evaluasi_model_lengkap.xlsx", sheet_name=sheet_name)
+        df = load_evaluation_data(sheet_name)
         df["Model"] = model_name
         data_list.append(df)
 
