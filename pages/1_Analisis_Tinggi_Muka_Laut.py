@@ -4,10 +4,10 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
-from io import BytesIO
-import tempfile
+import zipfile
 import os
 import requests
+import io
 
 # Setting layout halaman
 st.set_page_config(
@@ -23,16 +23,15 @@ with open('style.css') as f:
 
 @st.cache_resource
 def download_and_open_nc():
-    url = "https://github.com/adityoAJA/SLR/releases/download/v1/cmems_obs.nc"
-    
-    # Unduh file menggunakan requests
-    response = requests.get(url)
-    if response.status_code == 200:
-        # Membaca file NetCDF dari bytes
-        ds = xr.open_dataset(BytesIO(response.content), engine="netcdf4")
-        return ds
-    else:
-        raise Exception(f"Failed to download file: {response.status_code}")
+    url = "https://github.com/adityoAJA/SLR/releases/download/v1/cmems_obs.zip"
+
+    nc_filename = "cmems_obs.nc"
+    if not os.path.exists(nc_filename):
+        response = requests.get(url)
+        with zipfile.ZipFile(io.BytesIO(response.content)) as zip_ref:
+            zip_ref.extractall(".")  # Ekstrak ke current folder
+
+    return nc_filename
 
 # judul section
 st.title('Analisis Tinggi Muka Laut')
@@ -48,7 +47,12 @@ with tab1:
     with st.spinner("Sedang mengunduh dan membuka NetCDF..."):
         ds = download_and_open_nc()
 
-    data = ds
+    @st.cache_data
+    def load_nc_file(file_path):
+        return xr.open_dataset(file_path)
+
+    # load data
+    data = load_nc_file(ds)
 
     # Variabel
     lat = data['latitude'].values
