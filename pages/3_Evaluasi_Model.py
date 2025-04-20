@@ -196,6 +196,16 @@ with tab3:
     # Gabungkan semua sheet menjadi satu DataFrame
     df_all = pd.concat(data_list, ignore_index=True)
 
+    # Normalisasi nama kolom
+    df_all.columns = df_all.columns.str.strip()
+    
+    # Konversi ke numerik
+    df_all["Correlation"] = pd.to_numeric(df_all["Correlation"], errors='coerce')
+    df_all["RMSE"] = pd.to_numeric(df_all["RMSE"], errors='coerce')
+    
+    # Drop baris yang NaN jika perlu
+    df_all = df_all.dropna(subset=["Correlation", "RMSE"])
+
     st.subheader("📋 Tabel Evaluasi Lengkap")
     st.dataframe(
         df_all.style.background_gradient(cmap='YlGn', subset=["Correlation"])
