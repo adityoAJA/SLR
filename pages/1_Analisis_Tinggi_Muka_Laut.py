@@ -24,19 +24,24 @@ with open('style.css') as f:
 @st.cache_resource
 def download_and_open_nc():
     url = "https://github.com/adityoAJA/SLR/releases/download/v1/cmems_obs.nc"
+    
+    # Simpan di file temporer dengan suffix .nc
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".nc") as tmp_file:
+        temp_path = tmp_file.name
 
-    # Buat file temporer
-    temp = tempfile.NamedTemporaryFile(delete=False, suffix=".nc")
-    temp_path = temp.name
+        # Download dengan stream
+        with requests.get(url, stream=True) as r:
+            r.raise_for_status()
+            for chunk in r.iter_content(chunk_size=8192):
+                tmp_file.write(chunk)
 
-    # Download isi file
-    response = requests.get(url)
-    temp.write(response.content)
-    temp.close()
-
-    # Buka file .nc
-    ds = xr.open_dataset(temp_path, engine="netcdf4")
-    return ds
+    # Coba buka file NetCDF
+    try:
+        ds = xr.open_dataset(temp_path, engine="netcdf4")  # bisa coba 'h5netcdf' juga kalau error
+        return ds
+    except Exception as e:
+        st.error(f"Gagal membuka NetCDF: {e}")
+        return None
 
 # judul section
 st.title('Analisis Tinggi Muka Laut')
