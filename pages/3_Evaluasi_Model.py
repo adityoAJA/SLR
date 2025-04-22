@@ -37,7 +37,7 @@ def load_all_evaluation_data(sheet_map):
 # --- UI untuk Pilihan Model dan GCM ---
 tab1, tab2, tab3 = st.tabs([
     "📈 Evaluasi Per Metric",
-    "📈 Evaluasi Per GCM",
+    "📉 Evaluasi Per GCM",
     "📊 Tabel Evaluasi"
 ])
 
