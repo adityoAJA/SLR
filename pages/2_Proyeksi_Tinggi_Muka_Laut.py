@@ -11,6 +11,8 @@ import requests
 import io
 import os
 import zipfile
+from matplotlib import cm
+from matplotlib.colors import to_hex
 
 # Setting layout halaman
 st.set_page_config(
@@ -20,12 +22,12 @@ st.set_page_config(
         initial_sidebar_state="expanded"
     )
 
-# Load custom CSS file
-with open('style.css') as f:
-    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+# # Load custom CSS file
+# with open('style.css') as f:
+#     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 # Fungsi untuk mengunduh dan mengekstrak file ZIP dari GitHub Release
-@st.cache_resource
+# @st.cache_resource
 def download_and_extract_zip(url, output_folder):
     if not os.path.exists(output_folder) or not os.listdir(output_folder):
         os.makedirs(output_folder, exist_ok=True)
@@ -41,9 +43,9 @@ def download_and_extract_zip(url, output_folder):
     return output_folder
 
 # URL dan folder target untuk data trend dan hasil
-url1 = "https://github.com/adityoAJA/SLR/releases/download/v1/data_trend.zip"
+url1 = "https://github.com/adityoAJA/SLR/releases/download/v1/trend.zip"
 output_folder1 = "trend"
-url2 = "https://github.com/adityoAJA/SLR/releases/download/v1/data_tahunan.zip"
+url2 = "https://github.com/adityoAJA/SLR/releases/download/v1/hasil.zip"
 output_folder2 = "hasil"
 
 # judul section
@@ -103,7 +105,7 @@ with tab1:
     filename = f"{gcm_selected}_{skenario_selected}_2021_2100_{metode_selected}.nc"
     filepath = os.path.join(folder_path, filename)
 
-    @st.cache_data
+    # @st.cache_data
     def load_nc_file(path):
         return xr.open_dataset(path)
 
@@ -153,46 +155,115 @@ with tab1:
     lon_valid = lon_flat[valid_mask]
     sla_valid = sla_flat[valid_mask]
 
+    # 1. Bikin bins dan warna diskrit
+    zmin, zmax = -2, 2
+    bins = np.linspace(zmin, zmax, 11)  # 9 kelas
+    cmap = cm.get_cmap('coolwarm', 10)
+    colors = [to_hex(cmap(i)) for i in range(cmap.N)]
+
+    # Tambahkan 2 warna ekstrem di ujung
+    color_min = to_hex(cmap(0))
+    color_max = to_hex(cmap(cmap.N - 1))
+
+    colors_ext = [color_min] + colors + [color_max]
+
+    # 2. Diskritisasi data ke index bin
+    bin_indices = np.digitize(sla_valid, bins)
+    bin_indices = np.clip(bin_indices, 0, len(colors))  # dari 0 sampai len(colors)
+
+    # Membuat peta
     fig_map = go.Figure()
 
-    fig_map.add_trace(go.Scattermapbox(
-        lat=lat_valid,
-        lon=lon_valid,
-        mode='markers',
-        marker=go.scattermapbox.Marker(
-            size=4,
-            color=sla_valid,
-            colorscale='RdBu_r',
-            cmin=-0.25,
-            cmax=0.25,
-            colorbar=dict(
-                title='SLA (meter)',
-                orientation='h',
-                x=0.5,
-                y=-0.15,
-                len=0.8,
-                thickness=15
-            )
-        ),
-        text=[
-            f'Lat: {lt:.2f}<br>Lon: {ln:.2f}<br>SLA: {z:.3f} m'
-            for lt, ln, z in zip(lat_valid, lon_valid, sla_valid)
-        ],
-        hoverinfo='text'
+    # 4. Tambahkan satu trace untuk setiap kelas (tanpa legend)
+    for i in range(len(colors_ext)):
+        mask = bin_indices == i
+        if np.sum(mask) == 0:
+            continue
+        fig_map.add_trace(go.Scattermapbox(
+            lat=np.array(lat_valid)[mask],
+            lon=np.array(lon_valid)[mask],
+            mode='markers',
+            marker=go.scattermapbox.Marker(
+                size=3.3,
+                color=colors_ext[i],
+            ),
+            showlegend=False,
+            hoverinfo='text',
+            text=[
+                f"Lintang: {lt:.2f}<br>Bujur: {ln:.2f}<br>TML: {z:.3f} m"
+                for lt, ln, z in zip(np.array(lat_valid)[mask],
+                                    np.array(lon_valid)[mask],
+                                    np.array(sla_valid)[mask])
+            ]
+        ))
+    
+    # ==================== Bar Colorbar Horizontal ==================== #
+    bar_x = list(range(len(colors_ext)))  # agar bisa pakai tickvals & ticktext
+    bar_y = [2] * len(colors_ext)  # tetap 1 karena nanti domainnya kecil
+
+    fig_map.add_trace(go.Bar(
+        x=bar_x,
+        y=bar_y,
+        marker=dict(color=colors_ext),
+        width=0.95,  # agar tiap bar mepet, tidak ada spasi
+        orientation='v',
+        showlegend=False,
+        hoverinfo="none",
+        xaxis='x2',
+        yaxis='y2'
     ))
+
+    # ==================== Anotasi Label dan Judul Colorbar ==================== #
+    center_lat = -2
+    center_lon = 118
 
     fig_map.update_layout(
         mapbox_style="carto-darkmatter",
-        mapbox_center={"lat": -2, "lon": 118},
-        mapbox_zoom=3.4,
-        width=1000,
-        height=480,
-        margin={"r": 0, "t": 100, "l": 0, "b": 0},
-        title={
-            'text': f'Rata-Rata Tinggi Muka Laut Tahun {selected_year}',
+        mapbox_zoom=3.3,
+        autosize=True,
+        width=2000,
+        height=550,
+        mapbox_center={"lat": center_lat, "lon": center_lon},
+        
+        # Geser mapbox naik
+        mapbox=dict(domain={'y': [0.1, 1]}),
+        
+        margin=dict(l=0, r=0, t=90, b=100),
+        title={'text': f'Peta Rata-Rata TML dari {gcm_selected} - {skenario_selected} Metode {metode_selected} Tahun {selected_year}',
             'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
-            'font': {'size': 20, 'family': 'Arial, sans-serif'}
-        }
+            'font': {'size': 18, 'family': 'Arial, sans-serif'}},
+
+        # Sumbu untuk colorbar horizontal
+        xaxis2=dict(
+            domain=[0.15, 0.85],
+            anchor='y2',
+            tickmode='array',
+            tickvals = list(range(len(colors_ext))),
+            ticktext = ["< {:.2f}".format(bins[0])] + \
+                ["{:.2f} – {:.2f}".format(bins[i], bins[i+1]) for i in range(len(bins)-1)] + \
+                ["> {:.2f}".format(bins[-1])],
+            tickangle=45,  # biar teks horizontal (tidak miring)
+            tickfont=dict(size=11),  # kecilkan ukuran teks
+            showline=False,
+            showgrid=False,
+            zeroline=False
+        ),
+        yaxis2=dict(
+            domain=[0.02, 0.08],
+            anchor='x2',
+            showticklabels=False,
+            showgrid=False,
+            zeroline=False
+        ),
+
+        # Label bawah
+        annotations=[
+            dict(
+                x=0.5, y=-0.25, xref="paper", yref="paper",
+                text="Laju Perubahan (m/tahun)",
+                showarrow=False, font=dict(size=12, color="black")
+            )
+        ]
     )
 
     st.plotly_chart(fig_map)
@@ -325,44 +396,115 @@ with tab2:
         lon_valid = lon_flat[valid_mask]
         trend_valid = trend_flat[valid_mask]
 
+        # 1. Bikin bins dan warna diskrit
+        zmin, zmax = -2, 2
+        bins = np.linspace(zmin, zmax, 11)  # 10 kelas
+        cmap = cm.get_cmap('coolwarm', 10)
+        colors = [to_hex(cmap(i)) for i in range(cmap.N)]
+
+        # Tambahkan 2 warna ekstrem di ujung
+        color_min = to_hex(cmap(0))
+        color_max = to_hex(cmap(cmap.N - 1))
+
+        colors_ext = [color_min] + colors + [color_max]
+
+        # 2. Diskritisasi data ke index bin
+        bin_indices = np.digitize(trend_valid, bins)
+        bin_indices = np.clip(bin_indices, 0, len(colors))  # dari 0 sampai len(colors)
+
+        # Membuat peta
         fig_trend = go.Figure()
 
-        fig_trend.add_trace(go.Scattermapbox(
-            lat=lat_valid,
-            lon=lon_valid,
-            mode='markers',
-            marker=go.scattermapbox.Marker(
-                size=4,
-                color=trend_valid,
-                colorscale='RdBu_r',
-                cmin=-2,
-                cmax=2,
-                colorbar=dict(
-                    title='Trend (mm/tahun)',
-                    orientation='h',
-                    x=0.5,
-                    y=-0.15,
-                    len=0.85,
-                    thickness=15
-                )
-            ),
-            text=[
-                f"Lat: {lt:.2f}<br>Lon: {ln:.2f}<br>Trend: {tr:.2f} mm/yr"
-                for lt, ln, tr in zip(lat_valid, lon_valid, trend_valid)
-            ],
-            hoverinfo='text'
+        # 4. Tambahkan satu trace untuk setiap kelas (tanpa legend)
+        for i in range(len(colors_ext)):
+            mask = bin_indices == i
+            if np.sum(mask) == 0:
+                continue
+            fig_trend.add_trace(go.Scattermapbox(
+                lat=np.array(lat_valid)[mask],
+                lon=np.array(lon_valid)[mask],
+                mode='markers',
+                marker=go.scattermapbox.Marker(
+                    size=3.3,
+                    color=colors_ext[i],
+                ),
+                showlegend=False,
+                hoverinfo='text',
+                text=[
+                    f"Lintang: {lt:.2f}<br>Bujur: {ln:.2f}<br>TML: {z:.3f} m"
+                    for lt, ln, z in zip(np.array(lat_valid)[mask],
+                                        np.array(lon_valid)[mask],
+                                        np.array(trend_valid)[mask])
+                ]
+            ))
+        
+        # ==================== Bar Colorbar Horizontal ==================== #
+        bar_x = list(range(len(colors_ext)))  # agar bisa pakai tickvals & ticktext
+        bar_y = [2] * len(colors_ext)  # tetap 1 karena nanti domainnya kecil
+
+        fig_trend.add_trace(go.Bar(
+            x=bar_x,
+            y=bar_y,
+            marker=dict(color=colors_ext),
+            width=0.95,  # agar tiap bar mepet, tidak ada spasi
+            orientation='v',
+            showlegend=False,
+            hoverinfo="none",
+            xaxis='x2',
+            yaxis='y2'
         ))
+
+        # ==================== Anotasi Label dan Judul Colorbar ==================== #
+        center_lat = -2
+        center_lon = 118
 
         fig_trend.update_layout(
             mapbox_style="carto-darkmatter",
-            mapbox_center={"lat": -2, "lon": 118},
-            mapbox_zoom=3.4,
-            width=1000,
-            height=480,
-            margin={"r": 0, "t": 100, "l": 0, "b": 0},
-            title={'text':f"Tren TML Menggunakan {selected_gcm.upper()} - {selected_skenario.upper()} Metode {selected_metode.upper()} Periode 2021-2100",
-                   'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
-                'font': {'size': 19, 'family': 'Arial, sans-serif'}},
+            mapbox_zoom=3.3,
+            autosize=True,
+            width=2000,
+            height=550,
+            mapbox_center={"lat": center_lat, "lon": center_lon},
+            
+            # Geser mapbox naik
+            mapbox=dict(domain={'y': [0.1, 1]}),
+            
+            margin=dict(l=0, r=0, t=90, b=100),
+            title={'text':f"Peta Tren TML dari {selected_gcm.upper()} - {selected_skenario.upper()} Metode {selected_metode.upper()} Periode 2021-2100",
+                'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
+                    'font': {'size': 18, 'family': 'Arial, sans-serif'}},
+
+            # Sumbu untuk colorbar horizontal
+            xaxis2=dict(
+                domain=[0.15, 0.85],
+                anchor='y2',
+                tickmode='array',
+                tickvals = list(range(len(colors_ext))),
+                ticktext = ["< {:.2f}".format(bins[0])] + \
+                    ["{:.2f} – {:.2f}".format(bins[i], bins[i+1]) for i in range(len(bins)-1)] + \
+                    ["> {:.2f}".format(bins[-1])],
+                tickangle=45,  # biar teks horizontal (tidak miring)
+                tickfont=dict(size=11),  # kecilkan ukuran teks
+                showline=False,
+                showgrid=False,
+                zeroline=False
+            ),
+            yaxis2=dict(
+                domain=[0.02, 0.08],
+                anchor='x2',
+                showticklabels=False,
+                showgrid=False,
+                zeroline=False
+            ),
+
+            # Label bawah
+            annotations=[
+                dict(
+                    x=0.5, y=-0.25, xref="paper", yref="paper",
+                    text="Laju Perubahan (m/tahun)",
+                    showarrow=False, font=dict(size=12, color="black")
+                )
+            ]
         )
 
         st.plotly_chart(fig_trend)
