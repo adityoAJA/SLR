@@ -158,13 +158,16 @@ with tab1:
     # 1. Bikin bins dan warna diskrit
     zmin, zmax = -2, 2
     bins = np.linspace(zmin, zmax, 11)  # 9 kelas
+
+    # Bikin palet dari cmap
     cmap = cm.get_cmap('coolwarm', 10)
-    colors = [to_hex(cmap(i)) for i in range(cmap.N)]
+    colors = [to_hex(cmap(i / (cmap.N - 1))) for i in range(cmap.N)]
 
-    # Tambahkan 2 warna ekstrem di ujung
-    color_min = to_hex(cmap(0))
-    color_max = to_hex(cmap(cmap.N - 1))
+    # Tambahkan warna ekstrem di ujung yang benar-benar beda
+    color_min = "#081d58"      # Warna lebih ekstrem kiri
+    color_max = "#660000"     # Warna lebih ekstrem kanan
 
+    # Gabungkan warna
     colors_ext = [color_min] + colors + [color_max]
 
     # 2. Diskritisasi data ke index bin
@@ -399,13 +402,16 @@ with tab2:
         # 1. Bikin bins dan warna diskrit
         zmin, zmax = -2, 2
         bins = np.linspace(zmin, zmax, 11)  # 10 kelas
+
+        # Bikin palet dari cmap
         cmap = cm.get_cmap('coolwarm', 10)
-        colors = [to_hex(cmap(i)) for i in range(cmap.N)]
+        colors = [to_hex(cmap(i / (cmap.N - 1))) for i in range(cmap.N)]
 
-        # Tambahkan 2 warna ekstrem di ujung
-        color_min = to_hex(cmap(0))
-        color_max = to_hex(cmap(cmap.N - 1))
+        # Tambahkan warna ekstrem di ujung yang benar-benar beda
+        color_min = "#081d58"      # Warna lebih ekstrem kiri
+        color_max = "#660000"     # Warna lebih ekstrem kanan
 
+        # Gabungkan warna
         colors_ext = [color_min] + colors + [color_max]
 
         # 2. Diskritisasi data ke index bin
