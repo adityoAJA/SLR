@@ -41,7 +41,7 @@ st.title('Analisis Tinggi Muka Laut')
 # st.divider()
 
 # BAGI 3 TAB
-tab1, tab2, tab3 = st.tabs(["📍 SLA Tahunan", "📈 Tren Time Series", "🌊 Peta Tren SLA"])
+tab1, tab2, tab3 = st.tabs(["🔍 SLA Tahunan", "📈 Tren Time Series", "🗺 Peta Tren SLA"])
 
 with tab1:
     # 1. buat peta rata2 tahunan
