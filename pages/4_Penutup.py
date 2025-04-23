@@ -19,7 +19,7 @@ st.title('Penutup')
 st.divider()
 
 # judul section
-st.header('1. Kesimpulan')
+st.header('Kesimpulan')
 
 # narasi utama
 st.markdown('''
@@ -44,7 +44,7 @@ Berdasarkan evaluasi Korelasi, RMSE, dan Bias, GCM yang memiliki kombinasi nilai
 ''', unsafe_allow_html=True)
 
 # judul section 1
-st.header('2. Saran')
+st.header('Saran')
 
 # narasi pendahuluan
 st.warning('''
