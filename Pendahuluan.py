@@ -76,8 +76,8 @@ st.markdown('''
             <div class="justified-text">
 Penelitian ini menggunakan data Sea Surface Height (SSH) observasi dari CMEMS (Copernicus Marine) dengan resolusi spasial 0.083°x0.083°
             dan data Sea Surface Height proyeksi dari model iklim GCM CMIP6 yang terbagi menjadi 2 resolusi, yaitu resolusi
-            tinggi (< 50°-50°) seperti ACCESS, ACCESS-CM2, CANESM55, dan CMCC. Sedangkan GCM CMIP6 dengan resolusi rendah
-            (> 50°-50°) seperti EC-EARTH, MPI, dan MIROC6.
+            tinggi (< 1°x1°) seperti ACCESS, ACCESS-CM2, CANESM55, dan CMCC. Sedangkan GCM CMIP6 dengan resolusi rendah
+            (> 1°x1°) seperti EC-EARTH, MPI, dan MIROC6.
             Data dikumpulkan dari rentang waktu 1995 hingga 2014 untuk data historis dan dari tahun 2021 hingga 2100
             untuk proyeksi masa depan (SSP245 dan SSP585).
             </div>
