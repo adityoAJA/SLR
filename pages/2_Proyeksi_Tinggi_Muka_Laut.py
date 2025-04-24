@@ -27,7 +27,7 @@ st.set_page_config(
 #     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 # Fungsi untuk mengunduh dan mengekstrak file ZIP dari GitHub Release
-# @st.cache_resource
+@st.cache_resource
 def download_and_extract_zip(url, output_folder):
     if not os.path.exists(output_folder) or not os.listdir(output_folder):
         os.makedirs(output_folder, exist_ok=True)
