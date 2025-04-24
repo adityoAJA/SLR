@@ -43,9 +43,9 @@ def download_and_extract_zip(url, output_folder):
     return output_folder
 
 # URL dan folder target untuk data trend dan hasil
-url1 = "https://github.com/adityoAJA/SLR/releases/download/v1/trend.zip"
+url1 = "https://github.com/adityoAJA/SLR/releases/download/v1/data_trend.zip"
 output_folder1 = "trend"
-url2 = "https://github.com/adityoAJA/SLR/releases/download/v1/hasil.zip"
+url2 = "https://github.com/adityoAJA/SLR/releases/download/v1/data_tahunan.zip"
 output_folder2 = "hasil"
 
 # judul section
