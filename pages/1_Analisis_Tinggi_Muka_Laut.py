@@ -25,7 +25,7 @@ st.set_page_config(
 
 @st.cache_resource
 def download_and_open_nc():
-    url = "https://github.com/adityoAJA/SLR/releases/download/v1/cmems_obs.zip"
+    url = "https://github.com/adityoAJA/SLR/releases/download/v1/data_obs.zip"
 
     nc_filename = "cmems_obs.nc"
     if not os.path.exists(nc_filename):
