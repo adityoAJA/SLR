@@ -3,7 +3,7 @@ import streamlit as st
 
 # Setting layout halaman
 st.set_page_config(
-        page_title="SLR-Indonesia",
+        page_title="SLA-Indonesia",
         page_icon="🏠",
         layout="centered",
         initial_sidebar_state="expanded"
@@ -43,7 +43,7 @@ These findings are expected to contribute to the understanding of sea level dyna
 ''')
 
 # atribut tambahan
-st.markdown('**Keywords:** *Sea Level Rise*, *Deep Learning*, *Indonesia*, *Climate Projection*')
+st.markdown('**Keywords:** *Sea Level*, *Deep Learning*, *Indonesia*, *Climate Projection*')
 
 # judul section 1
 st.header('Background')
