@@ -611,7 +611,7 @@ with tab2:
     ))
 
     fig_trend.update_layout(
-        title={'text':'Trend of Indonesian Sea Level Projection Period 2021-2100',
+        title={'text':f'Trend of Indonesian Sea Level Projection {skenario_selected} Period 2021-2100',
                'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}},
         xaxis_title='Time',
