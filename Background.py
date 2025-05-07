@@ -32,7 +32,7 @@ st.header('Overview')
 # narasi utama (abstract)
 st.info('''
 Global climate change has caused significant sea level rise (SLR), especially in coastal areas of archipelagic countries such as Indonesia.
-This study aims to analyze historical trends and project SLE in the Indonesian region using a Deep Learning-based artificial intelligence approach.
+This study aims to analyze historical trends and project SLA in the Indonesian region using a Deep Learning-based artificial intelligence approach.
 The Deep Learning model (CNN-LSTM) is used to capture the spatial and temporal dynamics of Sea Surface Height (SSH) data obtained from satellite observations (CMEMS) and climate model projections (GCM CMIP6) in the SSP245 and SSP585 scenarios.
 
 SSH data is processed through a series of stages starting from slicing, normalization, to the formation of time sequences for input into the model architecture.
@@ -52,7 +52,7 @@ st.header('Background')
 st.markdown('''
             <div class="justified-text">
 Global climate change has a significant impact on sea level rise in various regions of the world, including Indonesia, which is an archipelagic country.
-The increase in global temperature causes the melting of polar ice and thermal expansion of sea water which directly triggers sea level rise (SLR).
+The increase in global temperature causes the melting of polar ice and thermal expansion of sea water which directly triggers sea level analysis (SLA).
 This condition poses a serious threat to coastal ecosystems, infrastructure, and communities living in coastal areas of Indonesia. 
             </div>   
 ''', unsafe_allow_html=True)
