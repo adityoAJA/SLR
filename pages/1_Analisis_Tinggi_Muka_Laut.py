@@ -13,7 +13,7 @@ from matplotlib.colors import to_hex
 
 # Setting layout halaman
 st.set_page_config(
-        page_title="Analisis TML Indonesia",
+        page_title="SLR-Indonesia",
         page_icon="🏠",
         layout="centered",
         initial_sidebar_state="expanded"
@@ -36,17 +36,17 @@ def download_and_open_nc():
     return nc_filename
 
 # judul section
-st.title('Analisis Tinggi Muka Laut')
+st.title('Sea Level Analysis (SLA)')
 
 # st.divider()
 
 # BAGI 3 TAB
-tab1, tab2, tab3 = st.tabs(["🔍 SLA Tahunan", "📈 Tren Time Series", "🗺 Peta Tren SLA"])
+tab1, tab2, tab3 = st.tabs(["🔍 SLA Per Year", "📈 Trend Time Series", "🗺 SLA Trend Map"])
 
 with tab1:
     # 1. buat peta rata2 tahunan
     # Panggil fungsi
-    with st.spinner("Sedang mengunduh dan membuka NetCDF..."):
+    with st.spinner("Downloading Data..."):
         ds = download_and_open_nc()
 
     @st.cache_data
@@ -70,7 +70,7 @@ with tab1:
     unique_years = np.unique(years)
 
     # Pilihan tahun
-    selected_year = st.selectbox('Pilih Tahun', unique_years)
+    selected_year = st.selectbox('Options', unique_years)
 
     # Ambil data rata-rata tahunan
     zos_yearly = zos.groupby('time.year').mean('time')
@@ -128,7 +128,7 @@ with tab1:
             showlegend=False,
             hoverinfo='text',
             text=[
-                f"Lintang: {lt:.2f}<br>Bujur: {ln:.2f}<br>TML: {z:.3f} m"
+                f"Latitude: {lt:.2f}<br>Longitude: {ln:.2f}<br>SLA: {z:.3f} m"
                 for lt, ln, z in zip(np.array(lat_valid)[mask],
                                     np.array(lon_valid)[mask],
                                     np.array(zos_valid)[mask])
@@ -167,7 +167,7 @@ with tab1:
         mapbox=dict(domain={'y': [0.1, 1]}),
         
         margin=dict(l=0, r=0, t=90, b=100),
-        title={'text': f'Peta Rata-Rata Tinggi Muka Laut (TML) Tahun {selected_year}',
+        title={'text': f'Average Sea Level Map Year {selected_year}',
             'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
             'font': {'size': 20, 'family': 'Arial, sans-serif'}},
 
@@ -198,7 +198,7 @@ with tab1:
         annotations=[
             dict(
                 x=0.5, y=-0.25, xref="paper", yref="paper",
-                text="Laju Perubahan (m/tahun)",
+                text="Trend (m/year)",
                 showarrow=False, font=dict(size=12, color="black")
             )
         ]
@@ -209,10 +209,10 @@ with tab1:
     # =============================
     # 1. Input Koordinat Referensi
     # =============================
-    st.subheader("Grafik Rata-rata TML Per Titik")
+    st.subheader("Average Sea Level on Specific")
 
-    ref_lat = st.number_input("Masukkan Lintang (Latitude)", min_value=float(lat.min()), max_value=float(lat.max()), value=float(lat.mean()))
-    ref_lon = st.number_input("Masukkan Bujur (Longitude)", min_value=float(lon.min()), max_value=float(lon.max()), value=float(lon.mean()))
+    ref_lat = st.number_input("Input (Latitude)", min_value=float(lat.min()), max_value=float(lat.max()), value=float(lat.mean()))
+    ref_lon = st.number_input("Input (Longitude)", min_value=float(lon.min()), max_value=float(lon.max()), value=float(lon.mean()))
 
     # Cari index grid terdekat
     nearest_lat_idx = np.abs(lat - ref_lat).argmin()
@@ -227,7 +227,7 @@ with tab1:
 
     # Debugging: Cek apakah semua nilai nan
     if np.all(np.isnan(zos_point)):
-        st.warning(f"Tidak ada data TML di koordinat sekitar ({nearest_lat:.2f}°, {nearest_lon:.2f}°). Coba ubah titik koordinat.")
+        st.warning(f"No Valid Data on ({nearest_lat:.2f}°, {nearest_lon:.2f}°). Try another coordinate.")
     else:
         df_point = pd.DataFrame({
             'time': time,
@@ -248,12 +248,12 @@ with tab1:
             x='year',
             y='sla',
             markers=True,
-            labels={'sla': 'TML (m)', 'year': 'Tahun'}
+            labels={'sla': 'SLA (m)', 'year': 'Year'}
         )
         fig_line.update_layout(
             height=400,
             title={
-                'text': f'Rata-rata Tahunan TML di Titik Terdekat ({nearest_lat:.2f}°, {nearest_lon:.2f}°)',
+                'text': f'Average Sea Level on Coordinate ({nearest_lat:.2f}°, {nearest_lon:.2f}°)',
                 'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}
             },
@@ -291,7 +291,7 @@ with tab2:
         x=time_values,
         y=y,
         mode='lines',
-        name='TML Per Tahun',
+        name='SLA Per Year',
         line=dict(color='royalblue')
     ))
 
@@ -299,16 +299,16 @@ with tab2:
         x=time_values,
         y=trend_line,
         mode='lines',
-        name=f'Trend (mm/tahun)',
+        name=f'Trend (mm/year)',
         line=dict(color='firebrick', dash='dash')
     ))
 
     fig_trend.update_layout(
-        title={'text':'Tren Tinggi Muka Laut (TML) Indonesia Periode 1993-2023',
+        title={'text':'Indonesia Sea Level Trend on Period 1993-2023',
                'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}},
         xaxis_title='Time',
-        yaxis_title='TML (m)',
+        yaxis_title='SLA (m)',
         width=900,
         height=500,
         template='plotly_white',
@@ -324,7 +324,7 @@ with tab2:
     fig_trend.add_annotation(
         x=time_values[-1],
         y=trend_line[-1],
-        text=f"{slope_mm_per_year:.2f} mm/tahun",
+        text=f"{slope_mm_per_year:.2f} mm/year",
         showarrow=False,
         font=dict(color='firebrick', size=12),
         xanchor='left'
@@ -407,7 +407,7 @@ with tab3:
             showlegend=False,
             hoverinfo='text',
             text=[
-                f"Lintang: {lt:.2f}<br>Bujur: {ln:.2f}<br>TML: {z:.3f} m"
+                f"Latitude: {lt:.2f}<br>Longitude: {ln:.2f}<br>SLA: {z:.3f} m"
                 for lt, ln, z in zip(np.array(lat_valid)[mask],
                                     np.array(lon_valid)[mask],
                                     np.array(trend_valid)[mask])
@@ -446,7 +446,7 @@ with tab3:
         mapbox=dict(domain={'y': [0.1, 1]}),
         
         margin=dict(l=0, r=0, t=90, b=100),
-        title={'text':"Peta Tren Tinggi Muka Laut Periode 1993-2023",
+        title={'text':"Sea Level Trend Map on Period 1993-2023",
                'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}},
 
@@ -486,12 +486,9 @@ with tab3:
     st.plotly_chart(fig_map_trend)
 
 # membuat narasi tabel dalam keterangan
-with st.expander(":blue-background[Keterangan :]"):
-    st.caption("**Penjelasan/Definisi**")
-    st.caption(('''**Data observasi yang digunakan** dari Copernicus Marine Environment Monitoring Service (CMEMS)
-                terkait sea level anomaly (SLA) Resolusi spasial adalah 0.125° x 0.125° (~12-13 km).'''))
-    st.caption(('''Data ini merupakan Multi-Year reprocessed data dari semua **satelit altimeter** yang tersedia
-                (seperti TOPEX, Jason, Envisat, CryoSat, dll) dan diproses menggunakan sistem DUACS
-                (Data Unification and Altimeter Combination System).'''))
-    st.caption(('''Frekuensi temporal adalah **bulanan (monthly)** dengan metode penggabungan (mean)
-                dengan Periode data dari Januari 1993 sampai Desember 2023.'''))
+with st.expander(":blue-background[Description :]"):
+    st.caption(('''**Observation data used** from the Copernicus Marine Environment Monitoring Service (CMEMS)
+                related to sea level anomaly (SLA) Spatial resolution is 0.125° x 0.125° (~12-13 km).'''))
+    st.caption(('''This data is Multi-Year reprocessed data from all available **altimeter satellites** (such as TOPEX, Jason, Envisat, CryoSat, etc.)
+                and processed using the DUACS system (Data Unification and Altimeter Combination System).'''))
+    st.caption(('''The temporal frequency is **monthly** with the merging method (mean) with the data period from January 1993 to December 2023.'''))
