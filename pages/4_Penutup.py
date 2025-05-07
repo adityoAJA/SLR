@@ -3,7 +3,7 @@ import streamlit as st
 
 # Setting layout halaman
 st.set_page_config(
-        page_title="Analisis TML Indonesia",
+        page_title="SLA-Indonesia",
         page_icon="🏠",
         layout="centered",
         initial_sidebar_state="expanded"
@@ -14,47 +14,46 @@ with open('style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 # judul section
-st.title('Penutup')
+st.title('Closing')
 
 st.divider()
 
 # judul section
-st.header('Kesimpulan')
+st.header('Conclusion')
 
 # narasi utama
 st.markdown('''
             <div class="justified-text">
-Hasil evaluasi model CNN dan CNN-LSTM menunjukkan bahwa kedua model itu secara umum dapat meningkatkan Korelasi dan juga
-            menurunkan nilai error dari setiap GCM. Namun model CNN terlihat cukup unggul dibandingkan dengan model CNN-LSTM
-            dalam hasil evaluasi metric setiap GCM. Hal tersebut bisa jadi karena pola temporal dalam GCM tidak terlalu signifikan
-            dalam proses model tersebut, justru layer-layer dan encoder konvolusi dalam CNN lah yang cukup berperan penting
-            dalam membangun proses model khususnya dalam meningkatkan resolusi spasial dari GCM tadi.
+The evaluation results of the CNN and CNN-LSTM models show that both models can generally increase the Correlation and also
+reduce the error value of each GCM. However, the CNN model looks quite superior compared to the CNN-LSTM model
+in the metric evaluation results of each GCM. This could be because the temporal pattern in the GCM is not too significant
+in the model process, in fact the layers and convolution encoders in CNN play quite an important role
+in building the model process, especially in increasing the spatial resolution of the GCM.
             </div>
 ''', unsafe_allow_html=True)
 st.markdown(''' ''')
 st.markdown('''
             <div class="justified-text">
-Berdasarkan evaluasi Korelasi, RMSE, dan Bias, GCM yang memiliki kombinasi nilai korelasi tinggi, dan error yang rendah adalah model
-            MIROC6, lalu diikuti oleh GCM MPI. Kalau dicermati lebih dalam lagi, GCM dengan resolusi spasial rendah seperti (MIROC6, MPI, dan EC-EARTH),
-            memiliki nilai evaluasi yang bagus dibandingkan dengan GCM dengan resolusi spasial rendah (ACCESS, ACCESS-CM2, CANESM5, dan CMCC).
-            Hal tersebut dipengaruhi oleh bagaimana proses model CNN atau CNN-LSTM yang mempertimbangkan nilai error utk menentukan "loss"
-            dalam setiap proses training model, dimana semakin tinggi resolusi GCM maka akumulasi nilai errornya pun akan semakin tinggi.
-            Hal tersebut tentu saja akan mempengaruhi nilai "loss" yang bisa menyebabkan adanya Overfitting Model. 
+Based on the evaluation of Correlation, RMSE, and Bias, the GCM that has a combination of high correlation values ​​and low error is the MIROC6 model,
+followed by the MPI GCM. If observed more deeply, GCMs with low spatial resolution such as (MIROC6, MPI, and EC-EARTH),
+have good evaluation values ​​compared to GCMs with low spatial resolution (ACCESS, ACCESS-CM2, CANESM5, and CMCC).
+This is influenced by how the CNN or CNN-LSTM model process considers the error value to determine the "loss" in each model training process,
+where the higher the GCM resolution, the higher the accumulated error value. This will of course affect the "loss" value which can cause Overfitting Model.
             </div>
 ''', unsafe_allow_html=True)
 
 # judul section 1
-st.header('Saran')
+st.header('Recomendation')
 
 # narasi pendahuluan
 st.warning('''
-            Perlu menguji model CNN dan CNN-LSTM yang sudah dibangun sebelumnya dengan GCM CMIP6 lainnya baik yang memiliki
-           resolusi spasial rendah dan resolusi spasial tinggi. Kemudian perlu melakukan rekonstruksi arsitektur model
-           Deep Learning lainnya seperti ConvLSTM, Conv2D atau Conv3D untuk mencari model terbaik yang bisa mengahasilkan
-           nilai evaluasi model yang baik serta meningkatkan resolusi spasial GCM untuk semua inputan GCM yang ada.
+            It is necessary to test the previously built CNN and CNN-LSTM models with other CMIP6 GCMs with
+low spatial resolution and high spatial resolution. Then it is necessary to reconstruct the architecture of
+other Deep Learning models such as ConvLSTM, Conv2D or Conv3D to find the best model that can produce
+good model evaluation values ​​and increase the spatial resolution of GCMs for all existing GCM inputs.
 ''')
 
-st.header('Daftar Pustaka')
+st.header('References')
 col1, col2 = st.columns([1, 20], gap='small')
 with col1:
     st.markdown('''**1.**''')
