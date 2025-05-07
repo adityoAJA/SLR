@@ -232,7 +232,7 @@ with tab1:
         mapbox=dict(domain={'y': [0.1, 1]}),
         
         margin=dict(l=0, r=0, t=90, b=100),
-        title={'text': f'Sea Level Map Projection from {gcm_selected} - {skenario_selected} Method {metode_selected} Year {selected_year}',
+        title={'text': f'Sea Level Projection Map from {gcm_selected} - {skenario_selected} with {metode_selected} Method in {selected_year}',
             'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
             'font': {'size': 18, 'family': 'Arial, sans-serif'}},
 
@@ -274,7 +274,7 @@ with tab1:
     # =============================
     # 1. Input Koordinat Referensi
     # =============================
-    st.subheader("Sea Level Projection on Specific Location")
+    st.subheader("Sea Level Projection at Specific Location")
 
     ref_lat = st.number_input("Input (Latitude)", min_value=float(lat.min()), max_value=float(lat.max()), value=float(lat.mean()), key='number1')
     ref_lon = st.number_input("Input (Longitude)", min_value=float(lon.min()), max_value=float(lon.max()), value=float(lon.mean()), key='number2')
@@ -318,7 +318,7 @@ with tab1:
         fig_line.update_layout(
             height=400,
             title={
-                'text': f'Sea Level Projection on ({nearest_lat:.2f}°, {nearest_lon:.2f}°)',
+                'text': f'Sea Level Projection at ({nearest_lat:.2f}°, {nearest_lon:.2f}°)',
                 'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'},
             },
@@ -331,7 +331,7 @@ with tab1:
 # TAB 2: TREND SLA
 # ====================
 with tab2:
-    # st.subheader("Sea Level Projection Trend Map on Periode 2021-2100")
+    # st.subheader("Sea Level Projection Trend Map Period 2021-2100")
 
     # Jalankan fungsi
     with st.spinner("Downloading file..."):
@@ -476,7 +476,7 @@ with tab2:
             mapbox=dict(domain={'y': [0.1, 1]}),
             
             margin=dict(l=0, r=0, t=90, b=100),
-            title={'text':f"Sea Level Projection Trend Map from {selected_gcm.upper()} - {selected_skenario.upper()} Method {selected_metode.upper()} Period 2021-2100",
+            title={'text':f"Sea Level Projection Trend from {selected_gcm.upper()} - {selected_skenario.upper()} with {selected_metode.upper()} Period 2021-2100",
                 'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                     'font': {'size': 18, 'family': 'Arial, sans-serif'}},
 
