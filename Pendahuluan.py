@@ -3,7 +3,7 @@ import streamlit as st
 
 # Setting layout halaman
 st.set_page_config(
-        page_title="Analisis TML Indonesia",
+        page_title="SLR-Indonesia",
         page_icon="🏠",
         layout="centered",
         initial_sidebar_state="expanded"
@@ -14,13 +14,13 @@ with open('style.css') as f:
 
 ######################################################
 # Judul utama halaman
-st.title('Analisis dan Proyeksi Tinggi Muka Laut di Indonesia')
+st.title('Sea Level Analysis and Projection in Indonesia')
 
 # atribut tambahan
 st.markdown('''
 **Adityo Wicaksono**
 
-*Badan Meteorologi Klimatologi dan Geofisika*
+*Indonesian Meteorology, Climatology and Geophysics Agency*
 
 ''')
 
@@ -29,64 +29,60 @@ st.divider()
 # judul section
 st.header('Overview')
 
-# narasi utama (abstrak)
+# narasi utama (abstract)
 st.info('''
-Perubahan iklim global telah menyebabkan peningkatan tinggi muka laut (TML) yang signifikan, terutama di wilayah pesisir negara kepulauan seperti Indonesia.
-        Studi ini bertujuan untuk menganalisis tren historis serta memproyeksikan TML di wilayah Indonesia menggunakan pendekatan kecerdasan buatan berbasis Deep Learning.
-        Model Deep Learning (CNN-LSTM) digunakan untuk menangkap dinamika spasial dan temporal dari data Sea Surface Height (SSH) yang diperoleh dari observasi satelit (CMEMS)
-        dan proyeksi model iklim (GCM CMIP6) pada skenario SSP245 dan SSP585.
+Global climate change has caused significant sea level rise (SLR), especially in coastal areas of archipelagic countries such as Indonesia.
+This study aims to analyze historical trends and project SLE in the Indonesian region using a Deep Learning-based artificial intelligence approach.
+The Deep Learning model (CNN-LSTM) is used to capture the spatial and temporal dynamics of Sea Surface Height (SSH) data obtained from satellite observations (CMEMS) and climate model projections (GCM CMIP6) in the SSP245 and SSP585 scenarios.
 
-Data SSH diolah melalui serangkaian tahapan mulai dari slicing, normalisasi, hingga pembentukan sekuens waktu untuk input ke dalam arsitektur model.
-        Model dilatih menggunakan data historis (1995-2014) dan dievaluasi untuk memproyeksikan kondisi masa depan (2021-2100).
-        Hasil proyeksi menunjukkan adanya kecenderungan peningkatan TML yang konsisten pada seluruh skenario pada sebagian besar GCM, dengan variasi spasial yang signifikan antar wilayah.
+SSH data is processed through a series of stages starting from slicing, normalization, to the formation of time sequences for input into the model architecture.
+The model is trained using historical data (1995-2014) and evaluated to project future conditions (2021-2100).
+The projection results show a consistent trend of increasing TML across all scenarios in most GCMs, with significant spatial variations between regions.
 
-Temuan ini diharapkan dapat memberikan kontribusi terhadap pemahaman dinamika tinggi muka laut di Indonesia dan mendukung perencanaan adaptasi serta mitigasi risiko perubahan iklim di wilayah pesisir.
+These findings are expected to contribute to the understanding of sea level dynamics in Indonesia and support adaptation planning and mitigation of climate change risks in coastal areas.
 ''')
 
 # atribut tambahan
-st.markdown('**Keywords:** *Tinggi Muka Laut*, *Deep Learning*, *Indonesia*, *Proyeksi Iklim*')
+st.markdown('**Keywords:** *Sea Level Rise*, *Deep Learning*, *Indonesia*, *Climate Projection*')
 
 # judul section 1
-st.header('Latar Belakang')
+st.header('Background')
 
 # narasi pendahuluan
 st.markdown('''
             <div class="justified-text">
-Perubahan iklim global berdampak signifikan terhadap kenaikan tinggi muka laut di berbagai wilayah dunia,
-            termasuk Indonesia yang merupakan negara kepulauan. Peningkatan suhu global menyebabkan pencairan es kutub dan
-            ekspansi termal air laut yang secara langsung memicu kenaikan tinggi muka laut (sea level rise, SLR).
-            Kondisi ini menjadi ancaman serius terhadap ekosistem pesisir, infrastruktur, dan masyarakat yang tinggal di wilayah pesisir Indonesia.  
+Global climate change has a significant impact on sea level rise in various regions of the world, including Indonesia, which is an archipelagic country.
+The increase in global temperature causes the melting of polar ice and thermal expansion of sea water which directly triggers sea level rise (SLR).
+This condition poses a serious threat to coastal ecosystems, infrastructure, and communities living in coastal areas of Indonesia. 
             </div>   
 ''', unsafe_allow_html=True)
 st.markdown(''' ''')
 st.markdown('''
             <div class="justified-text">
-Untuk memahami dan memproyeksikan dampak jangka panjang dari fenomena ini, diperlukan pendekatan ilmiah berbasis data yang mampu menangkap kompleksitas spasial
-            dan temporal dari perubahan tinggi muka laut. Oleh karena itu, studi ini mengusulkan penggunaan kombinasi data observasi dan proyeksi model iklim
-            dengan pendekatan Deep Learning, khususnya model CNN-LSTM yang telah terbukti efektif dalam menangani data spasio-temporal.
+To understand and project the long-term impacts of this phenomenon, a data-driven scientific approach is needed that is able to capture the spatial and temporal complexity of sea level change.
+Therefore, this study proposes the use of a combination of observational data and climate model projections with a Deep Learning approach, specifically the CNN model which has proven effective in handling spatial data.
             </div>   
 ''', unsafe_allow_html=True)
 st.markdown(''' ''')
 
 # judul section 2
-st.header('Data dan Metode')
+st.header('Data and Method')
 
 # narasi section 2
 st.markdown('''
             <div class="justified-text">
-Penelitian ini menggunakan data Sea Surface Height (SSH) observasi dari CMEMS (Copernicus Marine) dengan resolusi spasial 0.083°x0.083°
-            dan data Sea Surface Height proyeksi dari model iklim GCM CMIP6 yang terbagi menjadi 2 resolusi, yaitu resolusi
-            tinggi (< 1°x1°) seperti ACCESS, ACCESS-CM2, CANESM55, dan CMCC. Sedangkan GCM CMIP6 dengan resolusi rendah
-            (> 1°x1°) seperti EC-EARTH, MPI, dan MIROC6.
-            Data dikumpulkan dari rentang waktu 1995 hingga 2014 untuk data historis dan dari tahun 2021 hingga 2100
-            untuk proyeksi masa depan (SSP245 dan SSP585).
+This study uses Sea Surface Height (SSH) observation data from CMEMS (Copernicus Marine) with a spatial resolution of 0.083°x0.083°
+and Sea Surface Height projection data from the CMIP6 GCM climate model which is divided into 2 resolutions, namely high resolution (<1°x1°) such as ACCESS, ACCESS-CM2, CANESM55, and CMCC.
+While CMIP6 GCMs with low resolution (>1°x1°) such as EC-EARTH, MPI, and MIROC6.
+Data were collected from the time span of 1995 to 2014 for historical data and from 2021 to 2100
+for future projections (SSP245 and SSP585).
             </div>
 ''', unsafe_allow_html=True)
 st.markdown(''' ''')
 st.markdown('''
             <div class="justified-text">
-Data GCM dan SSH terlebih dahulu dipotong (slicing) berdasarkan wilayah Indonesia (90°-145° BT dan -15°-10° LS).
-            Selanjutnya dilakukan pre-processing berupa:
+GCM and SSH data are first sliced ​​based on the Indonesian region (90°-145° E and -15°-10° S).
+Next, pre-processing is carried out in the form of:
             </div>
 ''', unsafe_allow_html=True)
 cola, colb = st.columns([1,30], gap="small")
@@ -95,58 +91,59 @@ with cola:
 with colb:
     st.markdown('''
             <div class="justified-text">
-Penyamaan ukuran dan rentang waktu</div>''', unsafe_allow_html=True)
+Equalization of size and time series</div>''', unsafe_allow_html=True)
 cola, colb = st.columns([1,30], gap="small")
 with cola:
     st.markdown('''**b.**''')
 with colb:
     st.markdown('''
             <div class="justified-text">
-Pengisian nilai hilang</div>''', unsafe_allow_html=True)
+Filling missing values</div>''', unsafe_allow_html=True)
 cola, colb = st.columns([1,30], gap="small")
 with cola:
     st.markdown('''**c.**''')
 with colb:
     st.markdown('''
             <div class="justified-text">
-Normalisasi data menggunakan teknik Min-Max Scaling</div>''', unsafe_allow_html=True)
+Data normalization using Min-Max Scaling technique</div>''', unsafe_allow_html=True)
 cola, colb = st.columns([1,30], gap="small")
 with cola:
     st.markdown('''**d.**''')
 with colb:
     st.markdown('''
             <div class="justified-text">
-Pembuatan sekuens data untuk input CNN-LSTM</div>''', unsafe_allow_html=True)
+Generation of training and test data sequences for CNN model input</div>''', unsafe_allow_html=True)
 
 # gambar alur
-st.image("alur load.png", caption="Pre-Processing Data GCM")
+st.image("alur load.png", caption="Pre-Processing GCM and Observation Data")
 
 st.markdown('''
             <div class="justified-text">
-Penelitian ini menggunakan pendekatan berbasis Deep Learning, khususnya kombinasi arsitektur Convolutional Neural Network (CNN)
-            dan Long Short-Term Memory (LSTM), model dijalankan dalam dua metode, pertama single CNN, dan kedua metode hybrid CNN dan LSTM.
-            Metode ini dipilih karena kemampuannya dalam menangani data yang memiliki dimensi spasial dan temporal secara simultan,
-            seperti data tinggi muka laut (Sea Surface Height/SSH) dari satelit dan model iklim.
+This study uses a Deep Learning-based approach, specifically the Convolutional Neural Network (CNN) architecture
+and in addition also tries to use a combination of Convolutional Neural Network (CNN) and Long Short-Term Memory (LSTM),
+the model is run in two methods, the first is single CNN, and the second is a hybrid CNN and LSTM method.
+This method was chosen because of its ability to handle data that has spatial and temporal dimensions simultaneously,
+such as sea surface height (SSH) data from satellites and climate models.
             </div>
 ''', unsafe_allow_html=True)
 st.markdown(''' ''')
 st.markdown('''
             <div class="justified-text">
-Secara umum, setiap input SSH (Sea Surface Height) akan diproses oleh CNN untuk mendapatkan representasi spasialnya,
-            lalu serangkaian representasi ini dimasukkan ke dalam LSTM untuk mempelajari perubahan pola dari waktu ke waktu.
-            Dalam proses pembelajaran pola tersebut model CNN atau CNN-LSTM juga akan berusaha meningkatkan resolusi spasial
-            dari data inputan GCM CMIP6 mengikuti resolusi spasial dari data Observasinya (CMEMS) atau biasa disebut dengan Spatial Downscaling.
-            Arsitektur ini memungkinkan model untuk memprediksi kondisi TML masa depan berdasarkan dinamika masa lalu.
+In general, each SSH (Sea Surface Height) input will be processed by CNN to obtain its spatial representation,
+then a series of these representations are fed into LSTM to learn pattern changes over time.
+In the process of learning the pattern, the CNN or CNN-LSTM model will also try to increase the spatial resolution of
+the GCM CMIP6 input data following the spatial resolution of its Observation data (CMEMS) or commonly called Downscaling.
+This architecture allows the model to predict future SLR conditions based on past dynamics.
             </div>
 ''', unsafe_allow_html=True)
 
-st.image("alur model cnn-lstm.png", caption="Proses Normalisasi hingga Arsitektur Model")
+st.image("alur model cnn-lstm.png", caption="Model Architecture")
 
 # judul section 3
 st.header('Manfaat')
 
 # narasi section 3
-st.markdown('''**Penelitian ini diharapkan dapat memberikan kontribusi sebagai berikut:**''')
+st.markdown('''**This research is expected to provide the following contributions:**''')
 st.markdown(''' ''')
 col1, col2 = st.columns([1,30], gap="small")
 with col1:
@@ -154,7 +151,7 @@ with col1:
 with col2:
     st.markdown('''
                 <div class="justified-text">
-    Memberikan proyeksi jangka panjang tinggi muka laut di Indonesia berdasarkan skenario iklim masa depan.</div> 
+    Provides long-term projections of sea level in Indonesia based on future climate scenarios.</div> 
     ''', unsafe_allow_html=True)
 col1, col2 = st.columns([1,30], gap="small")
 with col1:
@@ -162,7 +159,7 @@ with col1:
 with col2:
     st.markdown('''
                 <div class="justified-text">
-    Menawarkan pendekatan model prediktif berbasis Deep Learning untuk analisis iklim dengan akurasi tinggi.</div> 
+    Offers a Deep Learning based predictive modeling approach for climate analysis with high accuracy.</div> 
     ''', unsafe_allow_html=True)
 col1, col2 = st.columns([1,30], gap="small")
 with col1:
@@ -170,8 +167,8 @@ with col1:
 with col2:
     st.markdown('''
                 <div class="justified-text">
-    Menjadi sumber informasi penting untuk pengambilan keputusan dalam mitigasi dan adaptasi terhadap dampak perubahan iklim,
-                terutama di wilayah pesisir.</div> 
+    Becoming an important source of information for decision making in mitigating and adapting to the impacts of climate change,
+    especially in coastal areas.</div> 
     ''', unsafe_allow_html=True)
 col1, col2 = st.columns([1,30], gap="small")
 with col1:
@@ -179,5 +176,5 @@ with col1:
 with col2:
     st.markdown('''
                 <div class="justified-text">
-    Mendorong pemanfaatan data iklim dan teknik komputasi modern dalam perencanaan pembangunan berkelanjutan.</div> 
+    Promote the use of climate data and modern computational techniques in sustainable development planning.</div> 
     ''', unsafe_allow_html=True)
