@@ -72,8 +72,7 @@ st.header('Data and Method')
 st.markdown('''
             <div class="justified-text">
 This study uses Sea Surface Height (SSH) observation data from CMEMS (Copernicus Marine) with a spatial resolution of 0.083°x0.083°
-and Sea Surface Height projection data from the CMIP6 GCM climate model which is divided into 2 resolutions, namely high resolution (<1°x1°) such as ACCESS, ACCESS-CM2, CANESM55, and CMCC.
-While CMIP6 GCMs with low resolution (>1°x1°) such as EC-EARTH, MPI, and MIROC6.
+and Sea Surface Height projection data from the CMIP6 GCM climate model such as ACCESS, ACCESS-CM2, CANESM55, CMCC, EC-EARTH, MPI, and MIROC6.
 Data were collected from the time span of 1995 to 2014 for historical data and from 2021 to 2100
 for future projections (SSP245 and SSP585).
             </div>
