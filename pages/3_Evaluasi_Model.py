@@ -90,7 +90,7 @@ with tab1:
         st.warning("⚠️ Poor Correlation")
 
     # --- Grafik Evaluasi GCM ---
-    st.subheader(f"📊 Graphic Evaluation of GCM version {model_type}")
+    st.subheader(f"📊 Graphic Evaluation of {model_type} version GCM")
 
     df_ranked = eval_excel.copy()
     df_ranked = df_ranked.sort_values(by="Correlation", ascending=False).reset_index(drop=True)
@@ -172,7 +172,7 @@ with tab2:
             x=0.5,
             font=dict(size=12)
         ),
-        title={'text':f"Radar Chart Metric Evaluation of {gcm_to_plot}",
+        title={'text':f"Metric Evaluation of {gcm_to_plot}",
                'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}},
     )
