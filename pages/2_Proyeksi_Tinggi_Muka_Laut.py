@@ -16,7 +16,7 @@ from matplotlib.colors import to_hex
 
 # Setting layout halaman
 st.set_page_config(
-        page_title="Analisis TML Indonesia",
+        page_title="SLA-Indonesia",
         page_icon="🏠",
         layout="centered",
         initial_sidebar_state="expanded"
@@ -37,9 +37,9 @@ def download_and_extract_zip(url, output_folder):
             with zipfile.ZipFile(io.BytesIO(response.content)) as zip_ref:
                 zip_ref.extractall(output_folder)
         except requests.exceptions.RequestException as e:
-            st.error(f"Gagal mengunduh file: {e}")
+            st.error(f"failed to download file: {e}")
         except zipfile.BadZipFile:
-            st.error("File ZIP rusak atau tidak valid")
+            st.error("Invalid file ZIP")
     return output_folder
 
 # URL dan folder target untuk data trend dan hasil
@@ -49,20 +49,20 @@ url2 = "https://github.com/adityoAJA/SLR/releases/download/v1/data_tahunan.zip"
 output_folder2 = "hasil"
 
 # judul section
-st.title('Proyeksi Tinggi Muka Laut')
+st.title('Sea Level Projection')
 
 # st.divider()
 
-tab1, tab2 = st.tabs(["📈 Rata-Rata Tinggi Muka Laut Per Tahun", "📊 Tren Tinggi Muka Laut"])
+tab1, tab2 = st.tabs(["📈 Sea Level Projection per Year", "📊 Sea ​​Level Projection Trend"])
 
 # ====================
 # TAB 1: RATA-RATA TAHUNAN
 # ====================
 with tab1:
-    # st.subheader("Peta Rata-Rata Tahunan Tinggi Muka Laut")
+    # st.subheader("Sea Level Projection per Year")
     
     # Jalankan fungsi
-    with st.spinner("Sedang mengunduh dan mengekstrak data rata-rata tahunan..."):
+    with st.spinner("Downloading file..."):
         folder_path2 = download_and_extract_zip(url2, output_folder2)
 
     # Folder hasil prediksi
@@ -95,11 +95,11 @@ with tab1:
 
     # Select box untuk memilih
     with col1:
-        gcm_selected = st.selectbox("Pilih GCM", gcm_list, key="rata1")
+        gcm_selected = st.selectbox("GCM Options", gcm_list, key="rata1")
     with col2:
-        skenario_selected = st.selectbox("Pilih Skenario", skenario_list, key="rata2")
+        skenario_selected = st.selectbox("Scenario Options", skenario_list, key="rata2")
     with col3:
-        metode_selected = st.selectbox("Pilih Metode", metode_list, key="rata3")
+        metode_selected = st.selectbox("Method Options", metode_list, key="rata3")
 
     # Bangun nama file berdasarkan pilihan
     filename = f"{gcm_selected}_{skenario_selected}_2021_2100_{metode_selected}.nc"
@@ -138,8 +138,8 @@ with tab1:
     max_year = years.max()
 
     # Slider untuk memilih tahun
-    selected_year = st.slider('Pilih Tahun', min_value=int(min_year), max_value=int(max_year), value=int(min_year), step=1)
-    # selected_year = st.slider('Pilih Tahun', unique_years)
+    selected_year = st.slider('Year Options', min_value=int(min_year), max_value=int(max_year), value=int(min_year), step=1)
+    # selected_year = st.slider('Year Options', unique_years)
 
     sla_yearly = sla.groupby('time.year').mean('time')
     sla_selected = sla_yearly.sel(year=selected_year)
@@ -193,7 +193,7 @@ with tab1:
             showlegend=False,
             hoverinfo='text',
             text=[
-                f"Lintang: {lt:.2f}<br>Bujur: {ln:.2f}<br>TML: {z:.3f} m"
+                f"Latitude: {lt:.2f}<br>Longitude: {ln:.2f}<br>SLA: {z:.3f} m"
                 for lt, ln, z in zip(np.array(lat_valid)[mask],
                                     np.array(lon_valid)[mask],
                                     np.array(sla_valid)[mask])
@@ -232,7 +232,7 @@ with tab1:
         mapbox=dict(domain={'y': [0.1, 1]}),
         
         margin=dict(l=0, r=0, t=90, b=100),
-        title={'text': f'Peta Rata-Rata TML dari {gcm_selected} - {skenario_selected} Metode {metode_selected} Tahun {selected_year}',
+        title={'text': f'Sea Level Map Projection from {gcm_selected} - {skenario_selected} Method {metode_selected} Year {selected_year}',
             'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
             'font': {'size': 18, 'family': 'Arial, sans-serif'}},
 
@@ -263,7 +263,7 @@ with tab1:
         annotations=[
             dict(
                 x=0.5, y=-0.25, xref="paper", yref="paper",
-                text="Laju Perubahan (m/tahun)",
+                text="Trend (m/year)",
                 showarrow=False, font=dict(size=12, color="black")
             )
         ]
@@ -274,10 +274,10 @@ with tab1:
     # =============================
     # 1. Input Koordinat Referensi
     # =============================
-    st.subheader("Grafik Rata-rata Tinggi Muka Laut (TML) Per Titik")
+    st.subheader("Sea Level Projection on Specific Location")
 
-    ref_lat = st.number_input("Masukkan Lintang (Latitude)", min_value=float(lat.min()), max_value=float(lat.max()), value=float(lat.mean()), key='number1')
-    ref_lon = st.number_input("Masukkan Bujur (Longitude)", min_value=float(lon.min()), max_value=float(lon.max()), value=float(lon.mean()), key='number2')
+    ref_lat = st.number_input("Input (Latitude)", min_value=float(lat.min()), max_value=float(lat.max()), value=float(lat.mean()), key='number1')
+    ref_lon = st.number_input("Input (Longitude)", min_value=float(lon.min()), max_value=float(lon.max()), value=float(lon.mean()), key='number2')
 
     # Cari index grid terdekat
     nearest_lat_idx = np.abs(lat - ref_lat).argmin()
@@ -292,7 +292,7 @@ with tab1:
 
     # Debugging: Cek apakah semua nilai nan
     if np.all(np.isnan(zos_point)):
-        st.warning(f"Tidak ada data TML di koordinat sekitar ({nearest_lat:.2f}°, {nearest_lon:.2f}°). Coba ubah titik koordinat.")
+        st.warning(f"Invalid Coordinate ({nearest_lat:.2f}°, {nearest_lon:.2f}°). Try another coordinate.")
     else:
         df_point = pd.DataFrame({
             'time': time,
@@ -313,12 +313,12 @@ with tab1:
             x='year',
             y='sla',
             markers=True,
-            labels={'sla': 'TML (m)', 'year': 'Tahun'}
+            labels={'sla': 'SLA (m)', 'year': 'Year'}
         )
         fig_line.update_layout(
             height=400,
             title={
-                'text': f'Rata-rata Tahunan TML di Titik Terdekat ({nearest_lat:.2f}°, {nearest_lon:.2f}°)',
+                'text': f'Sea Level Projection on ({nearest_lat:.2f}°, {nearest_lon:.2f}°)',
                 'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'},
             },
@@ -331,10 +331,10 @@ with tab1:
 # TAB 2: TREND SLA
 # ====================
 with tab2:
-    # st.subheader("Peta Tren Proyeksi Tinggi Muka Laut Periode 2021-2100")
+    # st.subheader("Sea Level Projection Trend Map on Periode 2021-2100")
 
     # Jalankan fungsi
-    with st.spinner("Sedang mengunduh dan mengekstrak data trend..."):
+    with st.spinner("Downloading file..."):
         folder_path1 = download_and_extract_zip(url1, output_folder1)
 
     # Folder trend
@@ -365,11 +365,11 @@ with tab2:
 
     col1, col2, col3 = st.columns(3)
     with col1:
-        selected_gcm = st.selectbox("Pilih GCM", gcm_options, key="tren1")
+        selected_gcm = st.selectbox("GCM Options", gcm_options, key="tren1")
     with col2:
-        selected_skenario = st.selectbox("Pilih Skenario", skenario_options, key="tren2")
+        selected_skenario = st.selectbox("Scenario Options", skenario_options, key="tren2")
     with col3:
-        selected_metode = st.selectbox("Pilih Metode", metode_options, key="tren3")
+        selected_metode = st.selectbox("Method Options", metode_options, key="tren3")
 
     # Cari file cocok
     selected_file = None
@@ -437,7 +437,7 @@ with tab2:
                 showlegend=False,
                 hoverinfo='text',
                 text=[
-                    f"Lintang: {lt:.2f}<br>Bujur: {ln:.2f}<br>TML: {z:.3f} m"
+                    f"Latitude: {lt:.2f}<br>Longitude: {ln:.2f}<br>SLA: {z:.3f} m"
                     for lt, ln, z in zip(np.array(lat_valid)[mask],
                                         np.array(lon_valid)[mask],
                                         np.array(trend_valid)[mask])
@@ -476,7 +476,7 @@ with tab2:
             mapbox=dict(domain={'y': [0.1, 1]}),
             
             margin=dict(l=0, r=0, t=90, b=100),
-            title={'text':f"Peta Tren TML dari {selected_gcm.upper()} - {selected_skenario.upper()} Metode {selected_metode.upper()} Periode 2021-2100",
+            title={'text':f"Sea Level Projection Trend Map from {selected_gcm.upper()} - {selected_skenario.upper()} Method {selected_metode.upper()} Period 2021-2100",
                 'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                     'font': {'size': 18, 'family': 'Arial, sans-serif'}},
 
@@ -507,7 +507,7 @@ with tab2:
             annotations=[
                 dict(
                     x=0.5, y=-0.25, xref="paper", yref="paper",
-                    text="Laju Perubahan (m/tahun)",
+                    text="Trend (m/year)",
                     showarrow=False, font=dict(size=12, color="black")
                 )
             ]
@@ -515,10 +515,10 @@ with tab2:
 
         st.plotly_chart(fig_trend)
     else:
-        st.warning("File dengan kombinasi tersebut tidak ditemukan.")
+        st.warning("There is no file found.")
 
     # 2 buat Grafik Trend
-    st.subheader("Trend Rata-Rata Tinggi Muka Laut Periode 2021-2100")
+    st.subheader("Sea Level Projection Trend Series")
     
     # Folder hasil prediksi
     folder_path = "hasil/"
@@ -550,11 +550,11 @@ with tab2:
 
     # Select box untuk memilih
     with col1:
-        gcm_selected = st.selectbox("Pilih GCM", gcm_list, key="grafik1")
+        gcm_selected = st.selectbox("GCM Options", gcm_list, key="grafik1")
     with col2:
-        skenario_selected = st.selectbox("Pilih Skenario", skenario_list, key="grafik2")
+        skenario_selected = st.selectbox("Scenario Options", skenario_list, key="grafik2")
     with col3:
-        metode_selected = st.selectbox("Pilih Metode", metode_list, key="grafik3")
+        metode_selected = st.selectbox("Method Options", metode_list, key="grafik3")
 
     # Bangun nama file berdasarkan pilihan
     filename = f"{gcm_selected}_{skenario_selected}_2021_2100_{metode_selected}.nc"
@@ -598,7 +598,7 @@ with tab2:
         x=time_values,
         y=y,
         mode='lines',
-        name='TML Per Tahun',
+        name='SLA Per Year',
         line=dict(color='royalblue')
     ))
 
@@ -606,12 +606,12 @@ with tab2:
         x=time_values,
         y=trend_line,
         mode='lines',
-        name=f'Trend (mm/tahun)',
+        name=f'Trend (mm/year)',
         line=dict(color='firebrick', dash='dash')
     ))
 
     fig_trend.update_layout(
-        title={'text':'Tren Tinggi Muka Laut (TML) Indonesia Periode 2021-2100',
+        title={'text':'Trend of Indonesian Sea Level Projection Period 2021-2100',
                'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}},
         xaxis_title='Time',
@@ -631,7 +631,7 @@ with tab2:
     fig_trend.add_annotation(
         x=time_values[-1],
         y=trend_line[-1],
-        text=f"{slope_mm_per_year:.3f} mm/tahun",
+        text=f"{slope_mm_per_year:.3f} mm/year",
         showarrow=False,
         font=dict(color='firebrick', size=12),
         xanchor='left'
@@ -640,13 +640,12 @@ with tab2:
     st.plotly_chart(fig_trend)
 
 # membuat narasi tabel dalam keterangan
-with st.expander(":blue-background[Keterangan :]"):
-    st.caption("**Penjelasan/Definisi**")
-    st.caption(('''**Data proyeksi yang digunakan** data Multi-GCM dari ESGF dengan variabel zos (Sea Surface Height)
-                dengan periode waktu bulanan (monthly) dengan 2 skenario yaitu ssp245 dan ssp585.'''))
-    st.caption(('''Diproses dengan model deep learning CNN dan hybrid CNN-LSTM dengan proses tunning menggunakan
-                Epoch 50 dan Batch Size 8 dengan EarlyStopping dari error 'loss'.'''))
-    st.caption(('''Model dibangun dengan data inputan adalah GCM CMIP6 historis periode 1995-2014,
-                dan data reanalysis dari CMEMS resolusi 0.083° x 0.083° (~9 km).
-                Setelah model dilatih, kemudian model tersebut diberi inputan baru dari data future
-                (data skenario iklim periode 2021 s.d 2100).'''))
+with st.expander(":blue-background[Description :]"):
+    st.caption(('''**The projection data used** is Multi-GCM data from ESGF with the zos (Sea Surface Height) variable with a monthly time period
+            with 2 scenarios, namely ssp245 and ssp585.'''))
+    st.caption(('''Processed with deep learning CNN and hybrid CNN-LSTM models with a tuning process using Epoch 50 and Batch Size 8
+            with EarlyStopping of the 'loss' error.'''))
+    st.caption(('''The model was built with input data from historical CMIP6 GCMs for the period 1995-2014,
+                and reanalysis data from CMEMS with a resolution of 0.083° x 0.083° (~9 km).
+                After the model was trained, the model was given new input from future data
+                (climate scenario data for the period 2021 to 2100).'''))
