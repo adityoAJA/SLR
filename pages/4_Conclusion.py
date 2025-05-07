@@ -36,7 +36,7 @@ st.markdown('''
             <div class="justified-text">
 Based on the evaluation of Correlation, RMSE, and Bias, the GCM that has a combination of high correlation values ​​and low error is the MIROC6 model,
 followed by the MPI GCM. If observed more deeply, GCMs with low spatial resolution such as (MIROC6, MPI, and EC-EARTH),
-have good evaluation values ​​compared to GCMs with low spatial resolution (ACCESS, ACCESS-CM2, CANESM5, and CMCC).
+have good evaluation values ​​compared to GCMs with better spatial resolution (ACCESS, CANESM5, and CMCC).
 This is influenced by how the CNN or CNN-LSTM model process considers the error value to determine the "loss" in each model training process,
 where the higher the GCM resolution, the higher the accumulated error value. This will of course affect the "loss" value which can cause Overfitting Model.
             </div>
@@ -47,8 +47,8 @@ st.header('Recomendation')
 
 # narasi pendahuluan
 st.warning('''
-            It is necessary to test the previously built CNN and CNN-LSTM models with other CMIP6 GCMs with
-low spatial resolution and high spatial resolution. Then it is necessary to reconstruct the architecture of
+            It is necessary to test the previously built CNN and CNN-LSTM models with other CMIP6 GCMs.
+            Then it is necessary to reconstruct the architecture of
 other Deep Learning models such as ConvLSTM, Conv2D or Conv3D to find the best model that can produce
 good model evaluation values ​​and increase the spatial resolution of GCMs for all existing GCM inputs.
 ''')
