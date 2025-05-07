@@ -477,7 +477,7 @@ with tab3:
         annotations=[
             dict(
                 x=0.5, y=-0.25, xref="paper", yref="paper",
-                text="Laju Perubahan (m/tahun)",
+                text="Trend (mm/year)",
                 showarrow=False, font=dict(size=12, color="black")
             )
         ]
