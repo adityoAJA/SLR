@@ -13,7 +13,7 @@ from matplotlib.colors import to_hex
 
 # Setting layout halaman
 st.set_page_config(
-        page_title="SLR-Indonesia",
+        page_title="SLA-Indonesia",
         page_icon="🏠",
         layout="centered",
         initial_sidebar_state="expanded"
