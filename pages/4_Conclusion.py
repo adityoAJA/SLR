@@ -14,12 +14,12 @@ with open('style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 # judul section
-st.title('Closing')
+st.title('Conclusion')
 
 st.divider()
 
-# judul section
-st.header('Conclusion')
+# # judul section
+# st.header('Conclusion')
 
 # narasi utama
 st.markdown('''
