@@ -53,6 +53,12 @@ other Deep Learning models such as ConvLSTM, Conv2D or Conv3D to find the best m
 good model evaluation values ​​and increase the spatial resolution of GCMs for all existing GCM inputs.
 ''')
 
+st.subheader('Contact')
+st.success('''
+            **email:** adityo.wicaksono@bmkg.go.id
+            **Phone:** (+62) 89654643692
+''')
+
 st.header('References')
 col1, col2 = st.columns([1, 20], gap='small')
 with col1:
