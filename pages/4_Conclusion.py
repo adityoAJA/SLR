@@ -56,6 +56,8 @@ good model evaluation values ​​and increase the spatial resolution of GCMs f
 st.subheader('Contact')
 st.success('''
             **email:** adityo.wicaksono@bmkg.go.id
+''')
+st.success('''
             **Phone:** (+62) 89654643692
 ''')
 
