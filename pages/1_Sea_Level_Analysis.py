@@ -167,7 +167,7 @@ with tab1:
         mapbox=dict(domain={'y': [0.1, 1]}),
         
         margin=dict(l=0, r=0, t=90, b=100),
-        title={'text': f'Peta Tinggi Muka Air Laut Tahun {selected_year}',
+        title={'text': f'Peta Analisis Muka Air Laut Tahun {selected_year}',
             'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
             'font': {'size': 20, 'family': 'Arial, sans-serif'}},
 
@@ -209,7 +209,7 @@ with tab1:
     # =============================
     # 1. Input Koordinat Referensi
     # =============================
-    st.subheader("Tinggi Muka Air Laut per Titik")
+    st.subheader("Analisis Muka Air Laut per Titik")
 
     ref_lat = st.number_input("Input (Latitude)", min_value=float(lat.min()), max_value=float(lat.max()), value=float(lat.mean()))
     ref_lon = st.number_input("Input (Longitude)", min_value=float(lon.min()), max_value=float(lon.max()), value=float(lon.mean()))
@@ -253,7 +253,7 @@ with tab1:
         fig_line.update_layout(
             height=400,
             title={
-                'text': f'Tinggi Muka Air Laut pada Titik ({nearest_lat:.2f}°, {nearest_lon:.2f}°)',
+                'text': f'Analisis Muka Air Laut pada Titik ({nearest_lat:.2f}°, {nearest_lon:.2f}°)',
                 'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}
             },
@@ -304,7 +304,7 @@ with tab2:
     ))
 
     fig_trend.update_layout(
-        title={'text':'Tren Tinggi Muka Air Laut di Indonesia Periode 1993-2023',
+        title={'text':'Tren Muka Air Laut di Indonesia Periode 1993-2023',
                'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}},
         xaxis_title='Time',
@@ -446,7 +446,7 @@ with tab3:
         mapbox=dict(domain={'y': [0.1, 1]}),
         
         margin=dict(l=0, r=0, t=90, b=100),
-        title={'text':"Peta Tren Tinggi Muka Air Laut Indonesia Periode 1993-2023",
+        title={'text':"Peta Tren Muka Air Laut Indonesia Periode 1993-2023",
                'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}},
 
