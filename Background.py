@@ -18,7 +18,7 @@ st.title('Analisis dan Proyeksi Muka Air Laut di Indonesia')
 
 # atribut tambahan
 st.markdown('''
-**Badan Meteorologi, Klimatologi, dan Geofisika Indonesia**
+**Badan Meteorologi, Klimatologi, dan Geofisika (BMKG)**
 
 ''')
 
