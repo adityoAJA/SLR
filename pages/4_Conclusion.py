@@ -19,49 +19,46 @@ st.title('Conclusion')
 st.divider()
 
 # # judul section
-# st.header('Conclusion')
+# st.header('Kesimpulan')
 
 # narasi utama
 st.markdown('''
             <div class="justified-text">
-The evaluation results of the CNN and CNN-LSTM models show that both models can generally increase the Correlation and also
-reduce the error value of each GCM. However, the CNN model looks quite superior compared to the CNN-LSTM model
-in the metric evaluation results of each GCM. This could be because the temporal pattern in the GCM is not too significant
-in the model process, in fact the layers and convolution encoders in CNN play quite an important role
-in building the model process, especially in increasing the spatial resolution of the GCM.
+Hasil evaluasi model CNN dan CNN-LSTM menunjukkan bahwa kedua model secara umum dapat meningkatkan Korelasi dan juga
+mengurangi nilai error masing-masing GCM. Namun, model CNN terlihat cukup unggul dibandingkan model CNN-LSTM
+pada hasil evaluasi metrik masing-masing GCM. Hal ini dapat terjadi karena pola temporal pada GCM tidak terlalu signifikan
+dalam proses pemodelan, padahal layer dan convolution encoder pada CNN memegang peranan cukup penting
+dalam membangun proses pemodelan, terutama dalam meningkatkan resolusi spasial GCM.
             </div>
 ''', unsafe_allow_html=True)
 st.markdown(''' ''')
 st.markdown('''
             <div class="justified-text">
-Based on the evaluation of Correlation, RMSE, and Bias, the GCM that has a combination of high correlation values ​​and low error is the MIROC6 model,
-followed by the MPI GCM. If observed more deeply, GCMs with low spatial resolution such as (MIROC6, MPI, and EC-EARTH),
-have good evaluation values ​​compared to GCMs with better spatial resolution (ACCESS, CANESM5, and CMCC).
-This is influenced by how the CNN or CNN-LSTM model process considers the error value to determine the "loss" in each model training process,
-where the higher the GCM resolution, the higher the accumulated error value. This will of course affect the "loss" value which can cause Overfitting Model.
+Berdasarkan hasil evaluasi Korelasi, RMSE, dan Bias, GCM yang memiliki kombinasi nilai korelasi tinggi dan error rendah adalah model MIROC6,
+diikuti oleh GCM MPI. Jika diamati lebih dalam, GCM dengan resolusi spasial rendah seperti (MIROC6, MPI, dan EC-EARTH),
+memiliki nilai evaluasi yang baik dibandingkan dengan GCM dengan resolusi spasial yang lebih baik (ACCESS, CANESM5, dan CMCC).
+Hal ini dipengaruhi oleh bagaimana proses model CNN atau CNN-LSTM mempertimbangkan nilai error untuk menentukan “loss” pada setiap proses pelatihan model,
+dimana semakin tinggi resolusi GCM, maka semakin tinggi pula nilai akumulasi error. Hal ini tentu saja akan mempengaruhi nilai “loss” yang dapat menyebabkan terjadinya Overfitting Model.
             </div>
 ''', unsafe_allow_html=True)
 
 # judul section 1
-st.header('Recomendation')
+st.header('Rekomendasi')
 
 # narasi pendahuluan
 st.warning('''
-            It is necessary to test the previously built CNN and CNN-LSTM models with other CMIP6 GCMs.
-            Then it is necessary to reconstruct the architecture of
-other Deep Learning models such as ConvLSTM, Conv2D or Conv3D to find the best model that can produce
-good model evaluation values ​​and increase the spatial resolution of GCMs for all existing GCM inputs.
+Perlu dilakukan pengujian model CNN dan CNN-LSTM yang telah dibangun sebelumnya dengan GCM CMIP6 lainnya.
+Kemudian perlu dilakukan rekonstruksi arsitektur
+model Deep Learning lainnya seperti ConvLSTM, Conv2D atau Conv3D untuk menemukan model terbaik yang dapat menghasilkan
+nilai evaluasi model yang baik dan meningkatkan resolusi spasial GCM untuk semua input GCM yang ada.
 ''')
 
-st.subheader('Contact')
+st.subheader('Kontak')
 st.success('''
             **email:** adityo.wicaksono@bmkg.go.id
 ''')
-st.success('''
-            **Phone:** (+62) 89654643692
-''')
 
-st.header('References')
+st.header('Referensi')
 col1, col2 = st.columns([1, 20], gap='small')
 with col1:
     st.markdown('''**1.**''')
