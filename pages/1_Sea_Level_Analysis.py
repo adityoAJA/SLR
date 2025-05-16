@@ -70,7 +70,7 @@ with tab1:
     unique_years = np.unique(years)
 
     # Pilihan tahun
-    selected_year = st.selectbox('Options', unique_years)
+    selected_year = st.selectbox('Pilihan Tahun', unique_years)
 
     # Ambil data rata-rata tahunan
     zos_yearly = zos.groupby('time.year').mean('time')
@@ -167,7 +167,7 @@ with tab1:
         mapbox=dict(domain={'y': [0.1, 1]}),
         
         margin=dict(l=0, r=0, t=90, b=100),
-        title={'text': f'{selected_year} Mean Sea Level Map',
+        title={'text': f'Peta Muka Air Laut Tahun {selected_year}',
             'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
             'font': {'size': 20, 'family': 'Arial, sans-serif'}},
 
@@ -209,7 +209,7 @@ with tab1:
     # =============================
     # 1. Input Koordinat Referensi
     # =============================
-    st.subheader("Mean Sea Level Graph at a Specific Location")
+    st.subheader("Muka Air Laut per Titik")
 
     ref_lat = st.number_input("Input (Latitude)", min_value=float(lat.min()), max_value=float(lat.max()), value=float(lat.mean()))
     ref_lon = st.number_input("Input (Longitude)", min_value=float(lon.min()), max_value=float(lon.max()), value=float(lon.mean()))
@@ -253,7 +253,7 @@ with tab1:
         fig_line.update_layout(
             height=400,
             title={
-                'text': f'Mean Sea Level at Coordinate ({nearest_lat:.2f}°, {nearest_lon:.2f}°)',
+                'text': f'Muka Air Laut pada Titik ({nearest_lat:.2f}°, {nearest_lon:.2f}°)',
                 'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}
             },
@@ -304,7 +304,7 @@ with tab2:
     ))
 
     fig_trend.update_layout(
-        title={'text':'Sea Level Trend in Indonesia Period 1993-2023',
+        title={'text':'Tren Muka Air Laut di Indonesia Periode 1993-2023',
                'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}},
         xaxis_title='Time',
@@ -446,7 +446,7 @@ with tab3:
         mapbox=dict(domain={'y': [0.1, 1]}),
         
         margin=dict(l=0, r=0, t=90, b=100),
-        title={'text':"Sea Level Trend Map in Indonesia Period 1993-2023",
+        title={'text':"Peta Tren Muka Air Laut Indonesia Periode 1993-2023",
                'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}},
 
@@ -487,8 +487,8 @@ with tab3:
 
 # membuat narasi tabel dalam keterangan
 with st.expander(":blue-background[Description :]"):
-    st.caption(('''**Observation data used** from the Copernicus Marine Environment Monitoring Service (CMEMS)
-                related to sea level anomaly (SLA) Spatial resolution is 0.125° x 0.125° (~12-13 km).'''))
-    st.caption(('''This data is Multi-Year reprocessed data from all available **altimeter satellites** (such as TOPEX, Jason, Envisat, CryoSat, etc.)
-                and processed using the DUACS system (Data Unification and Altimeter Combination System).'''))
-    st.caption(('''The temporal frequency is **monthly** with the merging method (mean) with the data period from January 1993 to December 2023.'''))
+    st.caption(('''**Data observasi yang digunakan** dari Copernicus Marine Environment Monitoring Service (CMEMS) terkait anomali permukaan laut (SLA).
+                    Resolusi spasial adalah 0,125° x 0,125° (~12-13 km).'''))
+    st.caption(('''Data ini merupakan data hasil pemrosesan ulang selama beberapa tahun dari semua **satelit altimeter** yang tersedia (seperti TOPEX, Jason, Envisat, CryoSat, dll.)
+                    dan diproses menggunakan sistem DUACS (Data Unification and Altimeter Combination System).'''))
+    st.caption(('''Frekuensi temporal adalah **bulanan** dengan metode penggabungan (rata-rata) dengan periode data dari Januari 1993 hingga Desember 2023.'''))
