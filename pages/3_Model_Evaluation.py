@@ -42,8 +42,8 @@ tab1, tab2, tab3 = st.tabs([
 ])
 
 with tab1:
-    model_type = st.selectbox("Model Options", ["Original", "CNN", "CNN-LSTM"])
-    selected_gcm = st.selectbox("GCM Options", ["CanESM5", "EC-Earth", "MIROC6", "MPI", "ACCESS", "ACCESS-CM2", "CMCC"])
+    model_type = st.selectbox("Pilihan Model", ["Original", "CNN", "CNN-LSTM"])
+    selected_gcm = st.selectbox("Pilihan GCM", ["CanESM5", "EC-Earth", "MIROC6", "MPI", "ACCESS", "ACCESS-CM2", "CMCC"])
 
     # --- Mapping nama sheet dan nama GCM ---
     sheet_map = {
@@ -71,7 +71,7 @@ with tab1:
     gcm_row = eval_excel[eval_excel['GCM'] == selected_gcm_lower].iloc[0]
 
     # --- Tampilkan Metrik Evaluasi ---
-    st.subheader(f"📈 Metric Evaluation of {selected_gcm} {model_type}")
+    st.subheader(f"📈 Metric Evaluasi dari {selected_gcm} model {model_type}")
 
     cor = gcm_row['Correlation']
     rmse = gcm_row['RMSE']
@@ -90,13 +90,13 @@ with tab1:
         st.warning("⚠️ Poor Correlation")
 
     # --- Grafik Evaluasi GCM ---
-    st.subheader(f"📊 Graphic Evaluation of {model_type} version GCM")
+    st.subheader(f"📊 Grafik Evaluasi dari GCM versi {model_type}")
 
     df_ranked = eval_excel.copy()
     df_ranked = df_ranked.sort_values(by="Correlation", ascending=False).reset_index(drop=True)
     df_ranked.index += 1  # Mulai dari 1
 
-    metric_option = st.selectbox("Metric Options:", ["Correlation", "RMSE", "Bias"])
+    metric_option = st.selectbox("Pilihan Metric:", ["Correlation", "RMSE", "Bias"])
 
     fig2 = px.bar(
         df_ranked,
@@ -110,7 +110,7 @@ with tab1:
     fig2.update_layout(
         xaxis_title="GCM",
         yaxis_title=metric_option,
-        title={'text':f"{metric_option} value for all GCM for {model_type} model version",
+        title={'text':f"Nila {metric_option} untuk semua GCM pada model {model_type} model version",
                'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}},
         showlegend=False
@@ -118,7 +118,7 @@ with tab1:
     st.plotly_chart(fig2, use_container_width=True)
 
 with tab2:
-    st.subheader("📊 Radar Chart for Comparison Model")
+    st.subheader("📊 Radar Chart untuk Perbandingan Model")
     # --- Load semua sheet ---
     sheet_map = {
         "Original": "Sheet1",
@@ -132,8 +132,8 @@ with tab2:
 
     # --- Pilih GCM ---
     available_gcms = df_all["GCM"].str.upper().unique().tolist()
-    model_to_plot = st.multiselect("Model Options for compare:", model_list, default=model_list)
-    gcm_to_plot = st.selectbox("GCM options for radar chart:", available_gcms)
+    model_to_plot = st.multiselect("Daftar Model:", model_list, default=model_list)
+    gcm_to_plot = st.selectbox("Pilihan GCM:", available_gcms)
 
     radar_data = df_all[df_all["Model"].isin(model_to_plot) & (df_all["GCM"].str.upper() == gcm_to_plot)]
 
@@ -172,7 +172,7 @@ with tab2:
             x=0.5,
             font=dict(size=12)
         ),
-        title={'text':f"Metric Evaluation of {gcm_to_plot}",
+        title={'text':f"Metric Evaluasi dari {gcm_to_plot}",
                'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}},
     )
@@ -214,7 +214,7 @@ with tab3:
 
 # membuat narasi tabel dalam keterangan
 with st.expander(":blue-background[Description :]"):
-    st.caption(('''**Metric Evaluation** using "Correlation", "RMSE", "Bias", dan "MAE".'''))
-    st.caption(('''Comparing evaluations between GCMs with all available metrics.'''))
-    st.caption(('''Comparing models that are more effective in handling spatial grid data, especially SLA variables.'''))
+    st.caption(('''**Metric Evaluasi** menggunakan "Correlation", "RMSE", "Bias", dan "MAE".'''))
+    st.caption(('''Membandingkan evaluasi antara GCM dengan semua metrik yang tersedia.'''))
+    st.caption(('''Membandingkan model yang lebih efektif dalam menangani data grid spasial, khususnya variabel SLA.'''))
 
