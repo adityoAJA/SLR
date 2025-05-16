@@ -59,7 +59,7 @@ tab1, tab2 = st.tabs(["📈 Sea Level Projection per Year", "📊 Sea ​​Leve
 # TAB 1: RATA-RATA TAHUNAN
 # ====================
 with tab1:
-    # st.subheader("Sea Level Projection per Year")
+    # st.subheader("Proyeksi Muka Air Laut per Tahun")
     
     # Jalankan fungsi
     with st.spinner("Downloading file..."):
@@ -95,11 +95,11 @@ with tab1:
 
     # Select box untuk memilih
     with col1:
-        gcm_selected = st.selectbox("GCM Options", gcm_list, key="rata1")
+        gcm_selected = st.selectbox("Pilihan GCM", gcm_list, key="rata1")
     with col2:
-        skenario_selected = st.selectbox("Scenario Options", skenario_list, key="rata2")
+        skenario_selected = st.selectbox("Pilihan Skenario", skenario_list, key="rata2")
     with col3:
-        metode_selected = st.selectbox("Method Options", metode_list, key="rata3")
+        metode_selected = st.selectbox("Pilihan Metode", metode_list, key="rata3")
 
     # Bangun nama file berdasarkan pilihan
     filename = f"{gcm_selected}_{skenario_selected}_2021_2100_{metode_selected}.nc"
@@ -138,7 +138,7 @@ with tab1:
     max_year = years.max()
 
     # Slider untuk memilih tahun
-    selected_year = st.slider('Year Options', min_value=int(min_year), max_value=int(max_year), value=int(min_year), step=1)
+    selected_year = st.slider('Pilihan Tahun', min_value=int(min_year), max_value=int(max_year), value=int(min_year), step=1)
     # selected_year = st.slider('Year Options', unique_years)
 
     sla_yearly = sla.groupby('time.year').mean('time')
@@ -232,7 +232,7 @@ with tab1:
         mapbox=dict(domain={'y': [0.1, 1]}),
         
         margin=dict(l=0, r=0, t=90, b=100),
-        title={'text': f'Sea Level Projection Map from {gcm_selected} - {skenario_selected} with {metode_selected} Method in {selected_year}',
+        title={'text': f'Peta Proyeksi Muka Air Laut dari {gcm_selected} - {skenario_selected} metode {metode_selected} tahun {selected_year}',
             'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
             'font': {'size': 18, 'family': 'Arial, sans-serif'}},
 
@@ -274,7 +274,7 @@ with tab1:
     # =============================
     # 1. Input Koordinat Referensi
     # =============================
-    st.subheader("Sea Level Projection at Specific Location")
+    st.subheader("Proyeksi Muka Air Laut per Titik")
 
     ref_lat = st.number_input("Input (Latitude)", min_value=float(lat.min()), max_value=float(lat.max()), value=float(lat.mean()), key='number1')
     ref_lon = st.number_input("Input (Longitude)", min_value=float(lon.min()), max_value=float(lon.max()), value=float(lon.mean()), key='number2')
@@ -318,7 +318,7 @@ with tab1:
         fig_line.update_layout(
             height=400,
             title={
-                'text': f'Sea Level Projection at ({nearest_lat:.2f}°, {nearest_lon:.2f}°)',
+                'text': f'Proyeksi Muka Air Laut pada titik ({nearest_lat:.2f}°, {nearest_lon:.2f}°)',
                 'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'},
             },
@@ -331,7 +331,7 @@ with tab1:
 # TAB 2: TREND SLA
 # ====================
 with tab2:
-    # st.subheader("Sea Level Projection Trend Map Period 2021-2100")
+    # st.subheader("Peta Tren Proyeksi Muka Air Laut Periode 2021-2100")
 
     # Jalankan fungsi
     with st.spinner("Downloading file..."):
@@ -365,11 +365,11 @@ with tab2:
 
     col1, col2, col3 = st.columns(3)
     with col1:
-        selected_gcm = st.selectbox("GCM Options", gcm_options, key="tren1")
+        selected_gcm = st.selectbox("Pilihan GCM", gcm_options, key="tren1")
     with col2:
-        selected_skenario = st.selectbox("Scenario Options", skenario_options, key="tren2")
+        selected_skenario = st.selectbox("Pilihan Skenario", skenario_options, key="tren2")
     with col3:
-        selected_metode = st.selectbox("Method Options", metode_options, key="tren3")
+        selected_metode = st.selectbox("Pilihan Metode", metode_options, key="tren3")
 
     # Cari file cocok
     selected_file = None
@@ -476,7 +476,7 @@ with tab2:
             mapbox=dict(domain={'y': [0.1, 1]}),
             
             margin=dict(l=0, r=0, t=90, b=100),
-            title={'text':f"Sea Level Projection Trend from {selected_gcm.upper()} - {selected_skenario.upper()} with {selected_metode.upper()} Period 2021-2100",
+            title={'text':f"Tren Proyeksi Muka Air Laut dari {selected_gcm.upper()} - {selected_skenario.upper()} with {selected_metode.upper()} Period 2021-2100",
                 'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                     'font': {'size': 18, 'family': 'Arial, sans-serif'}},
 
@@ -518,7 +518,7 @@ with tab2:
         st.warning("There is no file found.")
 
     # 2 buat Grafik Trend
-    st.subheader("Sea Level Projection Trend Series")
+    st.subheader("Grafik Tren Proyeksi Muka Air Laut")
     
     # Folder hasil prediksi
     folder_path = "hasil/"
@@ -550,11 +550,11 @@ with tab2:
 
     # Select box untuk memilih
     with col1:
-        gcm_selected = st.selectbox("GCM Options", gcm_list, key="grafik1")
+        gcm_selected = st.selectbox("Pilihan GCM", gcm_list, key="grafik1")
     with col2:
-        skenario_selected = st.selectbox("Scenario Options", skenario_list, key="grafik2")
+        skenario_selected = st.selectbox("Pilihan Skenario", skenario_list, key="grafik2")
     with col3:
-        metode_selected = st.selectbox("Method Options", metode_list, key="grafik3")
+        metode_selected = st.selectbox("Pilihan Metode", metode_list, key="grafik3")
 
     # Bangun nama file berdasarkan pilihan
     filename = f"{gcm_selected}_{skenario_selected}_2021_2100_{metode_selected}.nc"
@@ -611,7 +611,7 @@ with tab2:
     ))
 
     fig_trend.update_layout(
-        title={'text':f'Trend of Indonesian Sea Level Projection {skenario_selected} Period 2021-2100',
+        title={'text':f'Tren Proyeksi Muka Air Laut di Indonesia - {skenario_selected} Periode 2021-2100',
                'x': 0.5, 'y': 0.9, 'xanchor': 'center', 'yanchor': 'top',
                 'font': {'size': 20, 'family': 'Arial, sans-serif'}},
         xaxis_title='Time',
@@ -641,11 +641,10 @@ with tab2:
 
 # membuat narasi tabel dalam keterangan
 with st.expander(":blue-background[Description :]"):
-    st.caption(('''**The projection data used** is Multi-GCM data from ESGF with the zos (Sea Surface Height) variable with a monthly time period
-            with 2 scenarios, namely ssp245 and ssp585.'''))
-    st.caption(('''Processed with deep learning CNN and hybrid CNN-LSTM models with a tuning process using Epoch 50 and Batch Size 8
-            with EarlyStopping of the 'loss' error.'''))
-    st.caption(('''The model was built with input data from historical CMIP6 GCMs for the period 1995-2014,
-                and reanalysis data from CMEMS with a resolution of 0.083° x 0.083° (~9 km).
-                After the model was trained, the model was given new input from future data
-                (climate scenario data for the period 2021 to 2100).'''))
+    st.caption(('''**Data proyeksi yang digunakan** adalah data Multi-GCM dari ESGF dengan variabel zos (Sea Surface Height) dengan periode waktu bulanan
+                dengan 2 skenario yaitu ssp245 dan ssp585'''))
+    st.caption(('''Diproses dengan pembelajaran mendalam CNN dan model CNN-LSTM hibrida dengan proses penyetelan menggunakan Epoch 50 dan Ukuran Batch 8
+                dengan EarlyStopping dari kesalahan 'kerugian'.'''))
+    st.caption(('''Model ini dibangun dengan data masukan dari GCM CMIP6 historis untuk periode 1995-2014,
+            dan data analisis ulang dari CMEMS dengan resolusi 0,083° x 0,083° (~9 km).
+            Setelah model dilatih, model tersebut diberi masukan baru dari data masa depan (data skenario iklim untuk periode 2021 hingga 2100).'''))
